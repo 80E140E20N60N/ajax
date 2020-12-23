@@ -1,0 +1,2851 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:ajax</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="ajax-">Ajax课程</h1>
+<table>
+<thead>
+<tr>
+<th>达成的能力目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 能够知道Ajax 可以使网页在不重新刷新的情况下实现局部更新数据</td>
+</tr>
+<tr>
+<td>2. 能读懂Api接口描述文档 （数据接口文档）</td>
+</tr>
+<tr>
+<td>3. 能够使用jQuery编写发送Ajax GET和POST请求的固定套路代码</td>
+</tr>
+<tr>
+<td>4. 能够分析服务器返回的数据如何转换成Dom元素呈现在界面上</td>
+</tr>
+<tr>
+<td>5. 能够理解Ajax的本质是使用XMLHttpRequest对象与服务器进行通讯</td>
+</tr>
+<tr>
+<td>6. 能够使用art-template模板实现将服务器返回的数据转换成Dom元素呈现在界面上</td>
+</tr>
+<tr>
+<td>7. 能够知道Ajax请求中的两种跨域解决方案JSONP和CORS</td>
+</tr>
+<tr>
+<td>8. 能够完成英雄的增、删、查、上传头像业务</td>
+</tr>
+</tbody>
+</table>
+<h1 id="-">前置准备工作（同学们自行操作）</h1>
+<h2 id="node-js-">Node.js环境安装</h2>
+<p>1、登录 <a href="https://nodejs.org/zh-cn/download/">https://nodejs.org/zh-cn/download/</a> 找到自己对应的操作系统类型，自行下载好NodeJS安装文件安装到本地</p>
+<p><img src="imgs\33.png" alt="image-20201209112051346"></p>
+<p>2、双击下载的安装包一路默认安装直到结束即可完成</p>
+<h2 id="-ajax-server">启动Ajax课程需要的Server</h2>
+<p><strong>注意：</strong>务必先安装好node环境后才能打开ajax阶段需要的服务器</p>
+<p>1、下载好ajax阶段需要的服务器代码，根据下图蓝色背景选中的地址找到 run.bat文件，双击打开它</p>
+<p><strong>server下载地址：</strong><a href="http://157.122.54.189:9092/upload/ajaxapidoc/ajax_server.zip">http://157.122.54.189:9092/upload/ajaxapidoc/ajax_server.zip</a></p>
+<p>server提供的api接口说明文档：<a href="http://157.122.54.189:9092/upload/ajaxapidoc/index.html">http://157.122.54.189:9092/upload/ajaxapidoc/index.html</a></p>
+<p><img src="imgs\13.png" alt="image-20201201104640125"></p>
+<p>提示：看到如下界面就表示打开成功</p>
+<p><img src="imgs\14.png" alt="image-20201201104849302"></p>
+<p>2、在浏览器输入 <a href="http://127.0.0.1:3001/getHero">http://127.0.0.1:3001/getHero</a> 就可以访问到服务器中的数据</p>
+<h1 id="ajax-1">Ajax知识分布1</h1>
+<h2 id="-">客户端与服务器基本概念</h2>
+<ul>
+<li><p>客户端</p>
+<blockquote>
+<p>负责访问网络内容的端（例如：电脑、手机），我们称之为客户端</p>
+<ul>
+<li>例如在电脑浏览器输入 <a href="http://www.jd.com">www.jd.com</a> 访问京东服务器获取京东首页后呈现在用户眼前</li>
+<li>例如在手机上安装一个京东App就可以访问京东所提供的商品了</li>
+<li>客户端通常是通过浏览器或App去与服务器进行通讯的</li>
+</ul>
+</blockquote>
+</li>
+<li><p>服务器</p>
+<blockquote>
+<p>负责生产网络内容的电脑，我们称之为服务器</p>
+<ul>
+<li>京东服务器 负责生产客户端访问了<a href="http://www.jd.com">www.jd.com</a> 以后看到的所有网页内容包括：html，css，javascript，图片，文字，视频，音频等</li>
+<li><a href="http://127.0.0.1:3001/getHeroSkin">http://127.0.0.1:3001/getHeroSkin</a> 对应的服务器可以为我们提供JSON格式的王者英雄信息数据</li>
+<li>服务器通常被客户端请求后，它就会响应相应的内容给客户端</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h2 id="-">服务器的作用总结</h2>
+<p>服务器的作用就是提供如下两种内容给客户端使用：</p>
+<ul>
+<li><p>提供网页资源</p>
+<pre><code class="lang-css">通过url访问得到的是一个拥有图片，颜色，音频，视频等资源的网页 ，例如访问 www.jd.com  得到的网页资源
+</code></pre>
+</li>
+<li><p>提供数据资源(我们学习Ajax只关注和这种服务器的交互)</p>
+<pre><code class="lang-css">通过url访问得到的是数据，例如：访问 http://127.0.0.1:3001/getHeroSkin 得到的是JSON数据
+</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>互联网的组成全球由许许多多的客户端和服务器共同联网就组成了互联网</p>
+<p><img src="imgs\1.png" alt="1"></p>
+</li>
+</ul>
+<h2 id="-">客户端与服务器的交互步骤</h2>
+<p><img src="imgs\2.png" alt="2"></p>
+<p><img src="imgs\15.png" alt="image-20201201153903072"></p>
+<h2 id="-">服务器资源的两种请求方式</h2>
+<ul>
+<li>Get请求</li>
+</ul>
+<blockquote>
+<p>Get请求用来做什么的？</p>
+<ul>
+<li>我们通常约定客户端向服务器要资源就使用Get请求</li>
+<li>例如：在浏览器中输入URL后发出的请求都是Get请求，$.get(url) 发出的ajax请求都是get请求</li>
+</ul>
+</blockquote>
+<ul>
+<li>Post请求</li>
+</ul>
+<blockquote>
+<p>Post请求用来做什么的？</p>
+<ul>
+<li><p>我们通常约定客户端将数据提交给服务器就使用Post请求</p>
+</li>
+<li><p>例如：在浏览器中的登录页面上输入用户名、密码后点击登录按钮，发出的请求一定是Post请求</p>
+<p>$.post(url,data)发出的请求都是post请求</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="-ajax">什么是Ajax</h2>
+<blockquote>
+<p>Ajax 即“<strong>A</strong>synchronous <strong>J</strong>avascript <strong>A</strong>nd <strong>X</strong>ML”（异步 JavaScript 和 XML）的缩写，意思就是用JavaScript执行异步网络请求。</p>
+<p>通俗解释：在网页上利用JavaScript操作浏览器的<strong>XMLHttpRequest</strong>对象来与服务器进行数据交互的方式就是Ajax</p>
+</blockquote>
+<h2 id="ajax-">Ajax的作用</h2>
+<ul>
+<li><p>通过<strong>XMLHttpRequest</strong>对象与服务器进行少量数据交换，Ajax 可以使网页在不重新刷新的情况下实现局部更新数据</p>
+</li>
+<li><p>通过PPT 动画演示Ajax局部更新效果</p>
+<p><img src="imgs\8.png" alt="image-20201130001323008"></p>
+</li>
+</ul>
+<h2 id="ajax-">Ajax应用场景举例</h2>
+<ul>
+<li>用户注册时通过Ajax请求服务器检测用户名是否可用  <a href="http://demo.dtcms.net/register.html">http://demo.dtcms.net/register.html</a></li>
+</ul>
+<p><img src="imgs\9.png" alt="image-20201130103041619"  /></p>
+<ul>
+<li><p>前后端完全分离开发的项目，前端所有数据都是用Ajax来与服务器进行交互</p>
+<ul>
+<li><p>演示地址：<a href="http://ihrm-java.itheima.net/#/dashboard">http://ihrm-java.itheima.net/#/dashboard</a></p>
+<p>重点：通过这个项目给同学们讲清楚一个项目开发的各个岗位构成：</p>
+<ul>
+<li>产品人员负责设计系统功能</li>
+<li>UI/UE工程师负责设计系统界面图片</li>
+<li>前端工程师负责将系统界面图片转换成网页</li>
+<li>后端工程师负责给前端工程师提供系统每个页面要显示的数据和数据接口说明文档</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ajax-">Ajax初体验</h2>
+<ol>
+<li><p>找到老师发给大家的 “<strong>服务器与AJAX</strong>” 文件夹，根据下图蓝色背景选中的地址找到 run.bat文件，双击打开它</p>
+<p> <img src="imgs\13.png" alt="image-20201201104640125"></p>
+<p> 提示：看到如下界面就表示打开成功</p>
+<p> <img src="imgs\14.png" alt="image-20201201104849302">   </p>
+</li>
+<li><p>新建一个myFirstAjax.html页面后，生成html基本结构</p>
+</li>
+<li><p>在myFirstAjax.html 中通过script标签中导入 jQuery.js文件</p>
+</li>
+<li><p>在jQuery.js下新建一个script标签，编写如下代码即可完成一次ajax请求并获取到王者荣耀英雄数据</p>
+<pre><code class="lang-javascript"> $.get(&#39;http://127.0.0.1:3001/getHeroSkin&#39;,null,function(resData){
+      console.log(resData)
+   });
+</code></pre>
+</li>
+<li><p>在浏览器的Console面板中可以看到请求到的数据</p>
+<p><img src="imgs\12.png" alt="image-20201201100437778"></p>
+</li>
+<li><p>同学们看到此会有很多疑问</p>
+<ol>
+<li><p>第4步中的数据从哪里来的？</p>
+<pre><code class="lang-css">答案：数据是从&quot;http://127.0.0.1:3001/getHeroSkin&quot; 地址中来，我们可以从&quot;浏览器调试工具查看Ajax的请求和响应&quot;这一章节通过调试工具来跟踪查看到数据
+</code></pre>
+</li>
+<li><p>上面代码中我如何知道填写的是 <a href="http://127.0.0.1:3001/getHeroSkin">http://127.0.0.1:3001/getHeroSkin</a> 而不是其他地址</p>
+<pre><code class="lang-css">答案：可以通过阅读&quot; http：//127.0.0.1:3001/getHeroSkin 从哪里来？&quot;章节来得到答案
+</code></pre>
+</li>
+<li><p><a href="http://127.0.0.1:3001/getHeroSkin">http://127.0.0.1:3001/getHeroSkin</a>  为什么就能访问到了？</p>
+<pre><code class="lang-css">答案：可以通过阅读&quot;http://127.0.0.1:3001/getHeroSkin  为什么就能访问到了？&quot; 章节来得到答案
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="-ajax-">浏览器调试工具查看Ajax的请求和响应</h2>
+<ul>
+<li>在浏览器中按F12调出调试面板后，按照如下图片中的三个步骤就可以查看到ajax请求成功的数据</li>
+</ul>
+<p><img src="imgs\10.png" alt="image-20201130223432898"></p>
+<p><img src="imgs\11.png" alt="image-20201130224305896"></p>
+<h2 id="http-127-0-0-1-3001-getheroskin-">http：//127.0.0.1:3001/getHeroSkin 从哪里来？</h2>
+<ul>
+<li><p>类似于<a href="http://127.0.0.1:3001/getHeroSkin">http://127.0.0.1:3001/getHeroSkin</a> 这种地址我们统称为 “<strong>api接口</strong>”</p>
+</li>
+<li><p>&quot;<strong>api接口</strong>&quot;的使用说明通常是由<strong>后端工程师</strong>（java,php,python,.net,node.js）通过一个文档来提供给<strong>前端工程师</strong>的，这个文档我们称之为&quot;<strong>api接口说明文档</strong>&quot;</p>
+</li>
+<li><p>前端工程师通过阅读&quot;<strong>api接口说明文档</strong>&quot;就知道如何通过Ajax来与此接口进行数据交互了</p>
+<ul>
+<li><strong>api接口</strong>本质上是一个URL，我们先要认识URL的组成才能读懂&quot;<strong>api接口说明文档</strong>&quot;</li>
+</ul>
+</li>
+</ul>
+<h2 id="url-">URL及其组成</h2>
+<blockquote>
+<p>统一资源定位系统（uniform resource locator;URL）是用来标记网络上一个资源唯一存放位置，浏览器通过URL就可以成功访问到该资源</p>
+</blockquote>
+<ul>
+<li><p>常见的URL举例</p>
+<ul>
+<li><a href="http://www.itcast.cn/subject/about/index.html">http://www.itcast.cn/subject/about/index.html</a></li>
+<li><a href="http://157.122.54.189:9092/nc/course/courseDetial/getSectionQAByPage/3?pageIndex=3&amp;pageSize=1">http://157.122.54.189:9092/nc/course/courseDetial/getSectionQAByPage/3?pageIndex=3&amp;pageSize=1</a></li>
+</ul>
+</li>
+<li><p>URL组成</p>
+<ul>
+<li>客户端与服务器的<strong>通讯协议</strong></li>
+<li>存放资源的<strong>服务器名称</strong>，可以是域名:端口，也可以是IP地址:端口的形式存在</li>
+<li>资源在服务器的存放<strong>路径</strong></li>
+<li>查询服务器资源的<strong>参数</strong></li>
+</ul>
+<p><img src="imgs\3p.png" alt=""></p>
+</li>
+</ul>
+<h2 id="api-">Api接口文档组成</h2>
+<blockquote>
+<p>Api接口文档主要是用来描述如下三部分：</p>
+<p>​     1、描述Api接口地址字符串是什么，例如： <a href="http://127.0.0.1:3001/getHeroSkin">http://127.0.0.1:3001/getHeroSkin</a> </p>
+<p>​     2、描述Api接口地址传入的参数说明，例如：<a href="http://127.0.0.1:3001/getHeroSkin?heroName=白起">http://127.0.0.1:3001/getHeroSkin?heroName=白起</a>  </p>
+<p>​            中的 <strong>?heroName=白起</strong> 参数部分</p>
+<p>​     3、描述Api接口地址响应数据代表的意思，方便前端工程师处理数据</p>
+</blockquote>
+<ul>
+<li><strong>Api文档举例说明：获取英雄皮肤数据Api文档</strong></li>
+</ul>
+<blockquote>
+<p>请求部分说明</p>
+</blockquote>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">请求方式：</a>GET</p>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">请求路径：</a>/getHeroSkin       不同的路径表示返回不同的数据</p>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">Api接口完整请求地址：</a>$.get()方法中url参数值就是填写这种类型的完整地址</p>
+<pre><code class="lang-url">http://127.0.0.1:3001/getHeroSkin
+</code></pre>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">请求参数说明：</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">字段</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">heroName</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">此参数可选，表示接口可以接受英雄名参数来查找对应的英雄的数据<br />举例：<a href="http://127.0.0.1:3001/getHeroSkin?heroName=白起">http://127.0.0.1:3001/getHeroSkin?heroName=白起</a></td>
+</tr>
+</tbody>
+</table>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">带参数请求样例：</a></p>
+<pre><code class="lang-json">/getHeroSkin?heroName=白起
+</code></pre>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">带参数请求完整样例：</a></p>
+<pre><code class="lang-css">http://127.0.0.1:3001/getHeroSkin?heroName=白起
+</code></pre>
+<blockquote>
+<p>响应部分说明</p>
+</blockquote>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">响应数据格式: 通常是JSON格式</a></p>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">响应数据样例:</a></p>
+<pre><code class="lang-json">{
+    &quot;code&quot;:200,
+    &quot;des&quot;:&quot;请求成功&quot;,
+    &quot;data&quot;:{
+        &quot;id&quot;:12,
+        &quot;cname&quot;:&quot;阿轲&quot;,
+        &quot;skin_name&quot;:&quot;信念之刃|爱心护理|暗夜猫娘|致命风华|节奏热浪&quot;
+    }
+}
+</code></pre>
+<p><a href="#parameter-examples-Just_For_Fun-getHeroSkin-0_0_0-0">响应数据中每个属性含义说明:</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">字段</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">code</td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">响应状态码</td>
+</tr>
+<tr>
+<td style="text-align:left">des</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">响应描述</td>
+</tr>
+<tr>
+<td style="text-align:left">data</td>
+<td style="text-align:left">Object</td>
+<td style="text-align:left">响应数据对象</td>
+</tr>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">英雄 ID</td>
+</tr>
+<tr>
+<td style="text-align:left">cname</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">英雄名</td>
+</tr>
+<tr>
+<td style="text-align:left">skin_name</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">英雄皮肤</td>
+</tr>
+</tbody>
+</table>
+<h2 id="http-127-0-0-1-3001-getheroskin-">http：//127.0.0.1:3001/getHeroSkin  为什么就能访问到了？</h2>
+<ul>
+<li><p>必须要开启一个叫做web服务器的软件来对外提供数据服务才能访问到<a href="http://127.0.0.1:3001/getHeroSkin">http://127.0.0.1:3001/getHeroSkin</a></p>
+</li>
+<li><p>在Ajax初体验一节中要同学们打开的那个软件就叫做web服务器，如下图</p>
+<p><img src="imgs\14.png" alt="image-20201201104849302"></p>
+</li>
+<li><p>web服务器的职责：负责运行后端工程师（像java,php,python,.net,nodejs工程师我们统称后端工程师）编写好的代码来为api接口（比如：<a href="http://127.0.0.1:3001/getHeroSkin）提供数据的一种软件">http://127.0.0.1:3001/getHeroSkin）提供数据的一种软件</a></p>
+</li>
+</ul>
+<h2 id="jquery-ajax-">jQuery中的Ajax方法汇总</h2>
+<h3 id="-get-">$.get()方法(语法熟练掌握)</h3>
+<ul>
+<li>作用：该方法是利用Ajax发送Get请求<strong>获取服务器上的数据</strong></li>
+<li>语法和参数</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">语法格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$.get(<strong>url</strong>, <em>[data]</em>, <em>[callback]</em>, <em>[type]</em>)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名称</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">是否必选</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">url</td>
+<td style="text-align:center">string 字符串</td>
+<td style="text-align:center">必填</td>
+<td>要请求的资源地址，我们通常叫做<strong>Api接口</strong><br />例如：<a href="http://127.0.0.1:3001/getHeroSkin">http://127.0.0.1:3001/getHeroSkin</a><br />此地址通常是由Java，PHP，Python，.Net等后端工程师提供也<br />可以由前端工程师编写NodeJS代码来实现</td>
+</tr>
+<tr>
+<td style="text-align:center">data</td>
+<td style="text-align:center">object 对象</td>
+<td style="text-align:center">选填</td>
+<td>请求资源时，根据接口文档来决定是否需要携带参数<br />1、如果需要携带参数，格式举例:{id:100},{page:1,size:10}<br />2、如果不需要携带参数，可以不填写，或者填写null</td>
+</tr>
+<tr>
+<td style="text-align:center">callback</td>
+<td style="text-align:center">function 函数</td>
+<td style="text-align:center">选填</td>
+<td>请求成功回调函数，我们可以通过此函数参数获得服务器响应数据<br /> 例如：function(resdata){ resdata即为服务器响应的数据 }<br />虽然是选填，但真正开发过程中99%都需要填写此函数</td>
+</tr>
+<tr>
+<td style="text-align:center">type</td>
+<td style="text-align:center">string 字符串</td>
+<td style="text-align:center">选填</td>
+<td>服务器返回数据格式，我们用得最多的是json格式，少量使用xml<br />真正开发过程中此参数99%都省略</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>使用示例</p>
+<blockquote>
+<p>发送不带参数的Get请求 ，典型特征：$.get() 第二个参数填写null，或者不填写</p>
+</blockquote>
+</li>
+</ul>
+<pre><code class="lang-javascript">  // 第二个参数填写null更好理解，初学者建议使用这种方式
+  $.get(&#39;http://127.0.0.1:3001/getHeroSkin&#39;,null,function(resData){
+       console.log(resData);
+    });
+
+
+  /*
+  第二个参数不填写写法，这里注意，function类型的参数会被jQuery当做是第三个参数使用
+  所以以下代码表示不带参数
+  */
+  $.get(&#39;http://127.0.0.1:3001/getHeroSkin&#39;,function(resData){
+     console.log(resData);
+    })
+
+</code></pre>
+<blockquote>
+<p>发送带参数的Get请求，典型特征：第二个参数传入了{属性名:属性值} 这样格式的一个对象</p>
+</blockquote>
+<pre><code class="lang-javascript">   $.get(&#39;http://127.0.0.1:3001/getHeroSkin&#39;,{heroName:&#39;白起&#39;},function(resData){
+       console.log(resData);
+      });
+</code></pre>
+<h3 id="-post-">$.post()方法(语法熟练掌握)</h3>
+<ul>
+<li><p>作用：该方法是利用Ajax发送Post请求<strong>将数据提交给服务器</strong></p>
+</li>
+<li><p>语法和参数</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>语法格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$.post(<strong>url</strong>, <em>[data]</em>, <em>[callback]</em>, <em>[type]</em>)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名称</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">是否必填</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">url</td>
+<td style="text-align:center">string 字符串</td>
+<td style="text-align:center">必填</td>
+<td>要请求的资源地址，我们通常叫做<strong>Api接口</strong><br />例如：<a href="http://127.0.0.1:3001/addHeroSkin">http://127.0.0.1:3001/addHeroSkin</a><br />此地址通常是由Java，PHP，Python，.Net等后端工程师提供也<br />可以由前端工程师编写NodeJS代码来实现</td>
+</tr>
+<tr>
+<td style="text-align:center">data</td>
+<td style="text-align:center">object 对象</td>
+<td style="text-align:center">选填</td>
+<td>待发送给服务器的数据，格式{key:value,key1,value1} <br />或者 key=value&amp;key1=value1 都可以<br />如果没有数据提交可以填写null，或者不填写</td>
+</tr>
+<tr>
+<td style="text-align:center">callback</td>
+<td style="text-align:center">function 函数</td>
+<td style="text-align:center">选填</td>
+<td>请求成功回调函数<br />我们可以通过此函数参数获得服务器响应数据<br /> 例如：function(resdata){ resdata即为服务器响应的数据 }<br />虽然是选填，但真正开发过程中99%都需要填写此函数</td>
+</tr>
+<tr>
+<td style="text-align:center">type</td>
+<td style="text-align:center">string 字符串</td>
+<td style="text-align:center">选填</td>
+<td>服务器返回数据格式，我们用得最多的是json格式，少量使用xml<br />真正开发过程中此参数99%都省略</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>使用示例</p>
+<blockquote>
+<p>发送Post请求，将程咬金的英雄数据提交给<a href="http://127.0.0.1:3001/addHeroSkin">http://127.0.0.1:3001/addHeroSkin</a></p>
+</blockquote>
+<pre><code class="lang-javascript">// 将{cname:&#39;程咬金&#39;,skin_name:&#39;爱与正义、华尔街大亨&#39;} 数据发送给http://127.0.0.1:3001/addHeroSkin 地址实现添加一个皮肤
+$.post(&#39;http://127.0.0.1:3001/addHeroSkin&#39;,{cname:&#39;程咬金&#39;,skin_name:&#39;爱与正义、华尔街大亨&#39;},function(resdata){
+      console.log(resdata);
+ })
+</code></pre>
+</li>
+</ul>
+<h3 id="-ajax-">$.ajax()方法(语法熟练掌握)</h3>
+<ul>
+<li><p>作用：该方法既能发送Get请求，也能发送Post请求，比\$.get()和\$.post()更加灵活，功能更加丰富</p>
+</li>
+<li><p>语法和参数</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>基本语法格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$.ajax({<br />           url:&#39;  &#39;,     //请求URL地址                                                                                                                              <br />           type:&#39;  &#39;,   //请求方式 Get 或 Post<br />           data:{  } ,  // 本次请求要携带的参数<br />           success:function(resData){ }     //请求成功后的回调函数<br />})</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>使用示例</p>
+<blockquote>
+<p>发送带参数的Get请求，典型特征：第二个参数传入了{属性名:属性值} 这样格式的一个对象</p>
+</blockquote>
+<pre><code class="lang-javascript">$.ajax({
+    url:&#39;http://127.0.0.1:3001/getHeroSkin&#39;, // 请求api接口地址
+    type:&#39;GET&#39;,  // 表示发送get请求
+    data:{heroName:&#39;白起&#39;}, // 表示查询英雄名称为“白起”的数据
+    success:function(resData){ // 请求成功的数据存放在resData中
+        console.log(resData);
+    }
+})
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>发送Post请求，将李白的英雄数据提交给<a href="http://127.0.0.1:3001/addHeroSkin">http://127.0.0.1:3001/addHeroSkin</a></p>
+</blockquote>
+<pre><code class="lang-javascript">  $.ajax({
+      url:&#39;http://127.0.0.1:3001/addHeroSkin&#39;, // 请求api接口地址
+      type:&#39;POST&#39;,  // 表示发送post请求
+      data:{cname:&#39;李白&#39;,skin_name:&#39;青莲剑仙&#39;}, // 表示将此数据提交给url对应的接口地址
+      success:function(resData){ // 请求成功的数据存放在resData中
+          console.log(resData);
+      }
+  })
+</code></pre>
+<h1 id="-get-post-">练习-get和post分别至少做出一个</h1>
+<h2 id="-get-">获取英雄皮肤数据案例 -Get请求不带参数</h2>
+<ul>
+<li>效果</li>
+</ul>
+<p><img src="imgs\16.png" alt="image-20201201171745286"></p>
+<ul>
+<li><p>本案例使用的api接口文档地址：<code>http://157.122.54.189:9092/upload/ajaxapidoc/index.html#api-01-Ajax初体验-getHeroSkin</code> 在浏览器输入即可查看</p>
+</li>
+<li><p>实现代码</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .warp {
+            width: 300px;
+            height: 300px;
+            border: solid 1px #000;
+            border-radius: 5px;
+            margin: 20px auto;
+        }
+
+        .title {
+            width: 300px;
+            height: 30px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            text-align: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background-color: #0094ff;
+            color: white;
+        }
+        .res ul{
+            margin: 0;
+            padding: 5px;
+        }
+        .res li{
+           list-style: none;
+           text-indent: 24px;
+           margin-top: 10px;
+        }
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;warp&quot;&gt;
+        &lt;div class=&quot;title&quot;&gt;
+            &lt;button id=&quot;getbtn&quot;&gt; 获取英雄皮肤&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;res&quot;&gt;
+            &lt;ul&gt;
+                &lt;span&gt;名称:&lt;/span&gt;&lt;li id=&quot;cname&quot;&gt;&amp;nbsp;&lt;/li&gt;
+                &lt;hr&gt;
+                &lt;span&gt;皮肤:&lt;/span&gt;&lt;li id=&quot;skin_name&quot;&gt;&amp;nbsp;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;script src=&quot;https://www.jq22.com/jquery/jquery-1.10.2.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            // 给id为getbtn的按钮注册click点击事件
+            $(&#39;#getbtn&#39;).click(function () {
+                // 通过ajax的get请求，获取英雄数据
+                $.get(&#39;http://127.0.0.1:3001/getHeroSkin&#39;,null,function(resData){
+                    // 将请求到的英雄名称显示在id为cname的li标签中
+                   $(&#39;#cname&#39;).html(resData.data.cname);
+                     // 将请求到的英雄皮肤显示在id为skin_name的li标签中
+                   $(&#39;#skin_name&#39;).html(resData.data.skin_name);
+                });
+            })
+        })
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<h2 id="-get-">获取指定英雄皮肤数据案例-Get请求带参数</h2>
+<ul>
+<li><p>效果</p>
+<p><img src="imgs\17.png" alt="image-20201201173428230"></p>
+</li>
+<li><p>本案例使用的api接口文档地址：<code>http://157.122.54.189:9092/upload/ajaxapidoc/index.html#api-01-Ajax初体验-getHeroSkin</code> 在浏览器输入即可查看，重点查看 <code>请求参数</code> 的说明</p>
+</li>
+<li><p>代码</p>
+</li>
+</ul>
+<pre><code>```html
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .warp {
+            width: 400px;
+            height: 300px;
+            border: solid 1px #000;
+            border-radius: 5px;
+            margin: 20px auto;
+        }
+        .title {
+            width: 400px;
+            height: 30px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            text-align: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background-color: #0094ff;
+            color: white;
+        }
+        .res ul{
+            margin: 0;
+            padding: 5px;
+        }
+        .res li{
+           list-style: none;
+           text-indent: 24px;
+           margin-top: 10px;
+        }
+
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;div class=&quot;warp&quot;&gt;
+        &lt;div class=&quot;title&quot;&gt;
+            英雄名:&lt;input type=&quot;text&quot; id=&quot;heroName&quot; style=&quot;width:200px&quot; placeholder=&quot;输入你想查看的英雄名，如：白起&quot;&gt;
+            &lt;button id=&quot;getbtn&quot;&gt; 获取指定英雄皮肤&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;res&quot;&gt;
+            &lt;ul&gt;
+                &lt;span&gt;名称:&lt;/span&gt;&lt;li id=&quot;cname&quot;&gt;&amp;nbsp;&lt;/li&gt;
+                &lt;hr&gt;
+                &lt;span&gt;皮肤:&lt;/span&gt;&lt;li id=&quot;skin_name&quot;&gt;&amp;nbsp;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+</code></pre><p>​<br>​      <script src="https://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+​        <script>
+​            $(function () {
+​                 // 给id为getbtn的按钮注册click点击事件
+​                $(&#39;#getbtn&#39;).click(function () {
+​                   // 获取页面上用户在id为heroName文本框中输入的英雄名称
+​                    var hname = $(&#39;#heroName&#39;).val();
+​                    //如果用户没有输入则提示
+​                    if(!hname){
+​                        alert(&#39;请输入英雄名称&#39;);
+​                        return;//不再执行return之后的代码，也就是下面的$.get不会执行
+​                    }
+​<br>​                    // 通过ajax的get请求，获取指定英雄数据
+​                    $.get(&#39;<a href="http://127.0.0.1:3001/getHeroSkin&#39;,{heroName:hname},function(resData){">http://127.0.0.1:3001/getHeroSkin&#39;,{heroName:hname},function(resData){</a>
+​                        // 将请求到的英雄名称显示在id为cname的li标签中
+​                       $(&#39;#cname&#39;).html(resData.data.cname);
+​                         // 将请求到的英雄皮肤显示在id为skin_name的li标签中
+​                       $(&#39;#skin_name&#39;).html(resData.data.skin_name);
+​                    });
+​<br>​                })
+​            })
+​    </script>
+​    </body>
+​    </html> 
+​    <code>`</code></p>
+<h2 id="-post-">添加英雄皮肤案例-练习Post请求</h2>
+<ul>
+<li><p>案例效果</p>
+<p><img src="imgs\18.png" alt="image-20201201175344789"></p>
+</li>
+<li><p>本案例使用的api接口文档地址：<code>http://157.122.54.189:9092/upload/ajaxapidoc/index.html#api-01-Ajax初体验-addHeroSkin</code>在浏览器打开该链接即可查看</p>
+</li>
+<li><p>代码</p>
+</li>
+</ul>
+<pre><code>  &lt;!DOCTYPE html&gt;
+  &lt;html lang=&quot;en&quot;&gt;
+
+  &lt;head&gt;
+      &lt;meta charset=&quot;UTF-8&quot;&gt;
+      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+      &lt;title&gt;Document&lt;/title&gt;
+      &lt;style&gt;
+          .warp {
+              width: 300px;
+              height: 300px;
+              border: solid 1px #000;
+              border-radius: 5px;
+              margin: 20px auto;
+          }
+
+          .title {
+              width: 300px;
+              height: 30px;
+              border-top-left-radius: 5px;
+              border-top-right-radius: 5px;
+              text-align: center;
+              padding-top: 5px;
+              padding-bottom: 5px;
+              background-color: #0094ff;
+              color: white;
+          }
+
+          .res ul {
+              margin: 0;
+              padding: 0;
+          }
+
+          .res li {
+              list-style: none;
+              text-indent: 24px;
+              margin-top: 10px;
+              padding-top: 10px;
+              text-align: center;
+          }
+      &lt;/style&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+
+      &lt;div class=&quot;warp&quot;&gt;
+          &lt;div class=&quot;title&quot;&gt;
+              添加英雄皮肤数据
+          &lt;/div&gt;
+          &lt;div class=&quot;res&quot;&gt;
+              &lt;ul&gt;
+                  &lt;li&gt;
+                      &lt;span&gt;名称: &lt;/span&gt;&lt;input type=&quot;text&quot; id=&quot;cname&quot; /&gt;
+                  &lt;/li&gt;
+
+                  &lt;li&gt;
+                      &lt;span&gt;皮肤: &lt;/span&gt;&lt;input type=&quot;text&quot; id=&quot;skin_name&quot; /&gt;
+                  &lt;/li&gt;
+
+                  &lt;li&gt;
+                      &lt;button id=&quot;submit&quot; style=&quot;width: 100px;&quot;&gt;提交&lt;/button&gt;
+                  &lt;/li&gt;
+              &lt;/ul&gt;
+          &lt;/div&gt;
+      &lt;/div&gt;
+
+
+      &lt;script src=&quot;https://libs.baidu.com/jquery/1.8.3/jquery.min.js&quot;&gt;&lt;/script&gt;
+      &lt;script&gt;
+          $(function () {
+              // 给submit注册click点击事件
+              $(&#39;#submit&#39;).click(function () {
+              // 准备要发送给服务器的英雄数据
+                var heroData = {
+                  cname:$(&#39;#cname&#39;).val(),
+                  skin_name:$(&#39;#skin_name&#39;).val()
+                }
+                // 发送post请求，将heroData对象中的英雄数据提交给http://127.0.0.1:3001/addHeroSkin
+                $.post(&#39;http://127.0.0.1:3001/addHeroSkin&#39;,heroData,function(resData){
+                    // 提示用户服务器处理的结果是成功还是失败
+                    alert(resData.msg);
+                })
+              })
+          })
+      &lt;/script&gt;
+  &lt;/body&gt;
+
+  &lt;/html&gt;
+</code></pre><h2 id="jquery-serialize-">jQuery中的serialize()方法</h2>
+<ul>
+<li>为什么要使用serialize()方法</li>
+</ul>
+<p>我们在使用 $.post()方法时，通常需要获取页面上用户输入的数据，例如：“添加英雄皮肤案例-练习Post请求” 时我们是通过定义一个heroData 对象，里边的cname和skin_name属性值都是通过jQuery去获取页面上文本框中的值，这种方式的弊端在于有时候我们做的业务比较复杂，页面中需要获取值的个数会相当多，这时如果还是一个个通过jQuery方法获取的话，我们写的代码就会相当复杂，如果使用jQuery中的serialize()方法配合form标签就能一次性自动获取到所有处在<form></form>中的带有name属性的元素值 </p>
+<pre><code class="lang-html"> var heroData = {
+                cname:$(&#39;#cname&#39;).val(),  // 通过 $(&#39;#cname&#39;).val() 获取页面上用户输入的 英雄名称
+                skin_name:$(&#39;#skin_name&#39;).val()  // 通过 $(&#39;#skin_name&#39;).val() 获取页面上用户输入的 英雄皮肤名称
+              }
+
+//上面代码的写法，如果页面上有一百个值需要获取，我们要写100行这样的代码，相当麻烦，所以我们需要使用jQuery中的serialize()方法来快速获取页面上的元素
+</code></pre>
+<ul>
+<li>利用serialize()方法获取form表单中带有name属性元素的值步骤<ul>
+<li>1、在html页面上将需要获取值所有元素设置一个name属性<ul>
+<li>举例：<code>&lt;input type=&quot;text&quot; name=&quot;cname&quot; /&gt;</code>  文本框元素添加了一个 <strong>name=&quot;cname&quot;</strong>的属性</li>
+</ul>
+</li>
+<li>2、将这些元素全部包裹到<code>&lt;form id=&quot;form元素id&quot;&gt;&lt;/form&gt;</code>中，并且给form标签设置一个id属性，比如：form1<ul>
+<li>举例：<code>&lt;form id=&quot;form1&quot;&gt;&lt;input type=&quot;text&quot; name=&quot;cname&quot; value=&quot;baiqi&quot; /&gt;&lt;input type=&quot;text&quot; name=&quot;skin_name&quot; value=&quot;gouzi&quot;&gt;&lt;/form&gt;</code></li>
+</ul>
+</li>
+<li>3、使用 <code>$(&#39;#form元素id&#39;).serialize()</code> 就可以自动的把在form标签中的所有带有name属性的元素以 key=value的格式输出成字符串，多个中间用&amp;链接<ul>
+<li>举例：<code>$(&#39;#form1&#39;).serialize()</code>获取到的结果字符串为：<code>cname=baiqi&amp;skin_name=gouzi</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="-serialize-post-">使用serialize()方法改造添加英雄皮肤案例-练习Post请求</h3>
+<ul>
+<li><p>本案例使用的api接口文档地址：<code>http://157.122.54.189:9092/upload/ajaxdoc/index.html#api-01-Ajax初体验-addHeroSkin</code> 在浏览器打开该链接即可查看</p>
+</li>
+<li><p>关键代码</p>
+<ul>
+<li><p>1、将名称和皮肤对应的两个文本框加上name属性，并把它们放到<code>&lt;form&gt;&lt;/form&gt;</code>中</p>
+<pre><code class="lang-html">&lt;form id=&quot;form1&quot;&gt;
+    &lt;div class=&quot;res&quot;&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;span&gt;名称: &lt;/span&gt;&lt;input type=&quot;text&quot;  name=&quot;cname&quot;/&gt;
+            &lt;/li&gt;
+
+            &lt;li&gt;
+                &lt;span&gt;皮肤: &lt;/span&gt;&lt;input type=&quot;text&quot;  name=&quot;skin_name&quot; /&gt;
+            &lt;/li&gt;
+
+            &lt;li&gt;
+                &lt;button id=&quot;submit&quot; style=&quot;width: 100px;&quot;&gt;提交&lt;/button&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+</code></pre>
+</li>
+<li><p>2、ajax请求时，使用 <code>$(&#39;#form1&#39;).serialize()</code> 获取form表单中的带有name属性的值</p>
+<pre><code class="lang-javascript"> var heroData = $(&#39;#form1&#39;).serialize();
+</code></pre>
+</li>
+<li><p>3、因为 <code>&lt;button id=&quot;submit&quot; style=&quot;width: 100px;&quot;&gt;提交&lt;/button&gt;</code> 也在form表单标签中，所以当点击此按钮时会触发form表单的提交从而导致浏览器重新刷新后</p>
+</li>
+</ul>
+</li>
+<li><p>完整代码，注意找里边的 步骤1，步骤2，步骤3注释查看关键代码</p>
+</li>
+</ul>
+<pre><code>  &lt;!DOCTYPE html&gt;
+  &lt;html lang=&quot;en&quot;&gt;
+
+  &lt;head&gt;
+      &lt;meta charset=&quot;UTF-8&quot;&gt;
+      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+      &lt;title&gt;Document&lt;/title&gt;
+      &lt;style&gt;
+          .warp {
+              width: 300px;
+              height: 300px;
+              border: solid 1px #000;
+              border-radius: 5px;
+              margin: 20px auto;
+          }
+
+          .title {
+              width: 300px;
+              height: 30px;
+              border-top-left-radius: 5px;
+              border-top-right-radius: 5px;
+              text-align: center;
+              padding-top: 5px;
+              padding-bottom: 5px;
+              background-color: #0094ff;
+              color: white;
+          }
+
+          .res ul {
+              margin: 0;
+              padding: 0;
+          }
+
+          .res li {
+              list-style: none;
+              text-indent: 24px;
+              margin-top: 10px;
+              padding-top: 10px;
+              text-align: center;
+          }
+      &lt;/style&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+
+      &lt;div class=&quot;warp&quot;&gt;
+          &lt;div class=&quot;title&quot;&gt;
+              添加英雄皮肤数据
+          &lt;/div&gt;
+         &lt;!-- 步骤2：使用form表单标签包裹住所有带有name的input标签 --&gt;
+          &lt;form id=&quot;form1&quot;&gt;
+              &lt;div class=&quot;res&quot;&gt;
+                  &lt;ul&gt;
+                      &lt;li&gt;
+                             &lt;!-- 步骤1：将input标签加上name属性,值填写为 cname --&gt;
+                          &lt;span&gt;名称: &lt;/span&gt;&lt;input type=&quot;text&quot; name=&quot;cname&quot; required=&quot;required&quot; /&gt;
+                      &lt;/li&gt;
+
+                      &lt;li&gt;
+                            &lt;!-- 步骤1：将input标签加上name属性,值填写为skin_name --&gt;
+                          &lt;span&gt;皮肤: &lt;/span&gt;&lt;input type=&quot;text&quot; name=&quot;skin_name&quot; required=&quot;required&quot; /&gt;
+                      &lt;/li&gt;
+
+                      &lt;li&gt;
+                          &lt;button id=&quot;submit&quot; style=&quot;width: 100px;&quot;&gt;提交&lt;/button&gt;
+                      &lt;/li&gt;
+                  &lt;/ul&gt;
+              &lt;/div&gt;
+          &lt;/form&gt;
+      &lt;/div&gt;
+
+
+      &lt;script src=&quot;https://www.jq22.com/jquery/jquery-1.10.2.js&quot;&gt;&lt;/script&gt;
+      &lt;script&gt;
+          $(function () {
+            //给id为form1的表单注册submit事件  
+              $(&#39;#form1&#39;).submit(function (e) {
+                  e.preventDefault();
+                  //步骤3：通过$(&#39;#form1&#39;).serialize() 获取id为form1表单标签中的所有带有name属性的元素值
+                  // 注意：form表单标签中的元素可以是 input,select,checkbox,radio等
+                  var heroData = $(&#39;#form1&#39;).serialize();
+                  $.post(&#39;http://127.0.0.1:3001/addHeroSkin&#39;, heroData, function (resData) {
+                      alert(resData.msg);
+                  })
+              })
+          })
+      &lt;/script&gt;
+  &lt;/body&gt;
+
+  &lt;/html&gt;
+</code></pre><h1 id="ajax-2">Ajax知识分布2</h1>
+<h2 id="-">综合案例-英雄管理系统</h2>
+<h3 id="-">案例整体效果演示</h3>
+<p><img src="imgs\heromgr.gif" alt="heromgr"></p>
+<h2 id="vscode-bootstrap-">VSCode bootStrap插件安装</h2>
+<p>英雄管理案例使用的是bootstrap来进行布局的，如果在vscode中安装bootstrap片段插件后能够快速编写布局代码</p>
+<p><img src="imgs\23.png" alt="image-20201206145512086"></p>
+<h2 id="-">英雄管理系统业务分解</h2>
+<h3 id="-">前置准备</h3>
+<p>做以下业务之前，请先找到老师发给大家的 “<strong>服务器与AJAX</strong>” 文件夹，根据下图蓝色背景选中的地址找到 run.bat文件，双击打开它，才能被ajax请求到数据</p>
+<p><img src="imgs\13.png" alt="image-20201201104640125"></p>
+<h3 id="-">英雄列表数据实现两个效果</h3>
+<table>
+<thead>
+<tr>
+<th>实现功能描述：1、实现英雄信息表格显示     2、输入英雄名，点击搜索按钮查询出匹配的英雄数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>效果:<img src="imgs\19.png" alt="list"></td>
+</tr>
+<tr>
+<td><strong>此业务涉及到Api接口说明文档：</strong></td>
+</tr>
+<tr>
+<td><code>http://157.122.54.189:9092/upload/ajaxdoc/index.html#api-02-英雄信息管理-getHeroList</code></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="-1-">功能1:实现英雄信息表格显示（不带搜索条件）</h4>
+<h5 id="-">功能效果演示</h5>
+<p><img src="imgs\hreo-list1.gif" alt="list"></p>
+<h5 id="-">静态结构</h5>
+<blockquote>
+<p>创建index.html页面，将如下静态结构代码拷贝其中</p>
+</blockquote>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;英雄列表&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../libs/bootstrap/css/bootstrap.css&quot;&gt;
+    &lt;style&gt;
+        .container {
+            width: 900px;
+            min-height: 600px;
+            margin: 20px auto;
+        }
+        .table img {
+            width: 40px;
+            height: 40px;
+        }
+        .table td,
+        .table th {
+            text-align: center;
+        }
+        .table td:last-child {
+            width: 200px;
+        }
+        .heroName {
+            width: 200px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- 1、英雄列表静态结构- 开始 --&gt;
+        &lt;div class=&quot;panel panel-primary&quot;&gt;
+            &lt;!-- Default panel contents --&gt;
+            &lt;div class=&quot;panel-heading&quot;&gt;英雄列表管理&lt;/div&gt;
+            &lt;div class=&quot;panel-body&quot;&gt;
+                &lt;div class=&quot;row&quot;&gt;
+                    &lt;div class=&quot;col-md-6&quot;&gt;
+                        &lt;div class=&quot;input-group&quot;&gt;
+                            &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;heroName&quot; placeholder=&quot;请输入要搜索的英雄名称&quot;&gt;                            &lt;span class=&quot;input-group-btn&quot;&gt;
+                                &lt;button type=&quot;button&quot; id=&quot;search&quot; class=&quot;btn btn-default&quot;&gt;搜索&lt;/button&gt;
+                            &lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-md-3 col-md-offset-3&quot;&gt;
+                        &lt;button type=&quot;button&quot; class=&quot;btn btn-lg btn-success&quot; data-toggle=&quot;modal&quot;
+                            data-target=&quot;#myModal&quot;&gt;添加英雄&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Table --&gt;
+            &lt;table class=&quot;table&quot;&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;编号&lt;/th&gt;
+                        &lt;th&gt;英雄名&lt;/th&gt;
+                        &lt;th&gt;英雄性别&lt;/th&gt;
+                        &lt;th&gt;英雄头像&lt;/th&gt;
+                        &lt;th&gt;操作&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody id=&quot;heroList&quot;&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;1&lt;/td&gt;
+                        &lt;td&gt;程咬金&lt;/td&gt;
+                        &lt;td&gt;男&lt;/td&gt;
+                        &lt;td&gt;&lt;img src=&quot;http://127.0.0.1:3001/assets/logo.png&quot; alt=&quot;默认&quot;&gt;&lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-warning&quot;&gt;上传头像&lt;/button&gt;
+                            &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;删除&lt;/button&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;                   
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;!-- 1、英雄列表静态结构- 结束 --&gt;
+
+        &lt;!-- 2、添加英雄静态结构- 开始 --&gt;
+           &lt;!-- 2、添加英雄静态结构- 结束 --&gt;
+
+        &lt;!-- 3、上传英雄头像静态结构- 开始 --&gt;
+           &lt;!-- 3、上传英雄头像静态结构- 结束 --&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h5 id="jquery-">jQuery入口函数</h5>
+<blockquote>
+<p>在jQuery入口函数<code>$(function () {}</code> 中调用getList(); 来实现在浏览器打开index.html页面后即可执行getList()方法</p>
+</blockquote>
+<pre><code class="lang-html">//1.0 导入jquery库
+&lt;script src=&quot;https://www.jq22.com/jquery/jquery-1.10.2.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(function () {
+        // 所有逻辑JS代码在jQuery入口函数中进行编写
+        //1.0 实现在浏览器打开index.html页面后即可执行此方法
+        getList();
+    });
+
+    // 定义getList方法，实现两个逻辑
+    function getList(){
+        // 1、通过 $.get()方法完成http://127.0.0.1:3001/getHeroList 地址的请求，获取到服务器的英雄JSON数据
+        // 2、处理英雄JSON数据，将其转换成表格显示在网页中
+    }
+&lt;/script&gt;
+</code></pre>
+<h5 id="getlist-">getList()方法逻辑编写</h5>
+<blockquote>
+<p>getList()方法要完成的JS代码功能有：</p>
+<p>1、通过 $.get()方法完成<a href="http://127.0.0.1:3001/getHeroList">http://127.0.0.1:3001/getHeroList</a> 地址的请求，获取到服务器的英雄JSON数据</p>
+<p>2、处理英雄JSON数据，将其转换成表格显示在网页中</p>
+</blockquote>
+<pre><code class="lang-javascript">function getList() {
+  // 1.0 通过 $.get()方法完成http://127.0.0.1:3001/getHeroList 地址的请求，获取到服务器的英雄JSON数据后会自动保存到resData中
+    $.get(&#39;http://127.0.0.1:3001/getHeroList&#39;, null, function (resData) {
+        //1.0.1、判断服务器响应code，如果是500则表示服务器处理失败了，把处理结果resData.msg通过alert提示给用户
+        if (resData.code == 500) {
+            alert(resData.msg);
+            return;
+        }
+
+        //2.0 处理英雄JSON数据，将其转换成表格显示在网页中
+        //2.0.1 定义resHtml变量用来保存所有英雄数据的 tr标签结构
+        let resHtml = &#39;&#39;;
+        // 2.0.2 遍历resData.data数组，将每一个英雄通过tr、td结构拼接成表格的一行数据
+        resData.data.forEach(item =&gt; {
+            resHtml += `
+                &lt;tr&gt;
+                &lt;td&gt;${item.id}&lt;/td&gt;
+                &lt;td&gt;${item.name}&lt;/td&gt;
+                &lt;td&gt;${item.gender}&lt;/td&gt;
+                &lt;td&gt;&lt;img src=&quot;${item.img}&quot; alt=&quot;默认&quot;&gt;&lt;/td&gt;
+                &lt;td&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-warning&quot;&gt;上传头像&lt;/button&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;删除&lt;/button&gt;
+                &lt;/td&gt;
+                &lt;/tr&gt;
+                `;
+        })
+        // 2.0.3 将resHtml的表格结构字符串覆盖到id为heroList的tbody中
+        $(&#39;#heroList&#39;).html(resHtml);
+    })
+}
+</code></pre>
+<h5 id="-">结果查看和调试排错</h5>
+<blockquote>
+<p>在浏览器中打开index.html，即可看到英雄列表数据，如果没有看到英雄列表数据从如下两个方面去排查问题：</p>
+<p>1、在浏览器上按F12打开调试工具，选择NetWork标签，选择xhr过滤标签后按F5刷新页面，如果没有看到任何请求，则表示getList()方法中的发送ajax请求代码有问题，或者jquery的入口函数 $(function(){})中没有调用getList()方法</p>
+</blockquote>
+<p><img src="imgs\20.png" alt="image-20201204180237372"></p>
+<blockquote>
+<p>2、如果有发出ajax请求，也有数据回来，那么看getList()方法中的resData.data.forEach()这段代码中的js逻辑，如果有问题也会显示不出数据，认证检查之</p>
+</blockquote>
+<p><img src="imgs\21.png" alt="image-20201204180336035"></p>
+<h4 id="-2-">功能2:输入英雄名，点击搜索按钮查询出匹配的英雄数据</h4>
+<h5 id="-">功能效果演示</h5>
+<p><img src="imgs\hreo-search.gif" alt="image-20201204180850696"></p>
+<h5 id="-">静态结构</h5>
+<blockquote>
+<p>继续打开在做功能1实现的index.html，静态结构已经在里边写好了，找到里边的文本框和搜索按钮即可</p>
+</blockquote>
+<p><img src="imgs\22.png" alt="image-20201204180850696"></p>
+<h5 id="jquery-">jQuery入口函数</h5>
+<blockquote>
+<p>找到index.html代码，在jQuery入口函数<code>$(function () {}</code> 中 给id为search搜索按钮注册click事件</p>
+</blockquote>
+<pre><code class="lang-javascript">$(function () {
+    // 获取英雄列表
+    getList();
+
+    // 2.0 给搜索按钮增加click事件
+    $(&#39;#search&#39;).click(function(){
+        // 2.0.1 获取id为heroName的文本框中的英雄名称，该文本框内容是用户自行输入的
+        let heroName = $(&#39;#heroName&#39;).val();
+        //2.0.2 调用getList()方法并把英雄名称当做参数传入进去
+        getList(heroName)
+    })
+});
+</code></pre>
+<h5 id="-getlist-">改造getList()方法</h5>
+<blockquote>
+<p>改造点为2个：</p>
+<p>1、给getList增加一个形参</p>
+<p>2、将$.get()方法改为带参数的ajax请求</p>
+</blockquote>
+<pre><code class="lang-javascript">// 1.0 获取带条件的英雄列表
+ // 改造点1: 给getList增加一个形参pHeroName
+function getList(pHeroName) {
+  // 改造点2: $.get()第二个参数变为：{heroName:pHeroName},回调函数的逻辑不变化
+    $.get(&#39;http://127.0.0.1:3001/getHeroList&#39;, {heroName:pHeroName}, function (resData) {
+        //1.0.1、判断服务器响应code，如果是500则表示服务器处理失败了，把处理结果resData.msg通过alert提示给用户
+        if (resData.code == 500) {
+            alert(resData.msg);
+            return;
+        }
+
+        //2.0 处理英雄JSON数据，将其转换成表格显示在网页中
+        //2.0.1 定义resHtml变量用来保存所有英雄数据的 tr标签结构
+        let resHtml = &#39;&#39;;
+        // 2.0.2 遍历resData.data数组，将每一个英雄通过tr、td结构拼接成表格的一行数据
+        resData.data.forEach(item =&gt; {
+            resHtml += `
+                &lt;tr&gt;
+                &lt;td&gt;${item.id}&lt;/td&gt;
+                &lt;td&gt;${item.name}&lt;/td&gt;
+                &lt;td&gt;${item.gender}&lt;/td&gt;
+                &lt;td&gt;&lt;img src=&quot;${item.img}&quot; alt=&quot;默认&quot;&gt;&lt;/td&gt;
+                &lt;td&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-warning&quot;&gt;上传头像&lt;/button&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;删除&lt;/button&gt;
+                &lt;/td&gt;
+                &lt;/tr&gt;
+                `;
+        })
+        // 2.0.3 将resHtml的表格结构字符串覆盖到id为heroList的tbody中
+        $(&#39;#heroList&#39;).html(resHtml);
+    })
+}
+</code></pre>
+<h5 id="-">结果验证</h5>
+<blockquote>
+<p>在浏览器中打开index.html，在搜索框中输入白起后点击搜索按钮后 表格中只显示白起这个英雄的数据，其他英雄不显示即为成功</p>
+</blockquote>
+<h3 id="-">添加英雄效果</h3>
+<p><img src="imgs\hero-add.gif" alt="img"></p>
+<h4 id="-">静态结构</h4>
+<p> 将下面代码框静态结构拷贝到 index.html的</p>
+<p> <code>&lt;!-- 2、新增英雄静态布局-开始 --&gt;</code></p>
+<p><code>&lt;!-- 2、新增英雄静态布局-结束 --&gt;</code></p>
+<p> 中间后，修改添加英雄按钮为如下样式：</p>
+<p> <code>&lt;button type=&quot;button&quot; class=&quot;btn btn-lg btn-success&quot; data-toggle=&quot;modal&quot; data-target=&quot;#myModal&quot;&gt;添加英雄&lt;/button&gt;</code></p>
+<p> 主要是增加 data-toggle=&quot;modal&quot;  data-target=&quot;#myModal&quot;  两个属性用来配合bootstrap-3.3.4.js 打开模态框</p>
+<pre><code class="lang-html">&lt;!-- 2、新增英雄静态布局-开始 --&gt;
+&lt;div class=&quot;modal fade&quot; id=&quot;myModal&quot;&gt;
+    &lt;div class=&quot;modal-dialog&quot;&gt;
+        &lt;div class=&quot;modal-content&quot;&gt;
+            &lt;div class=&quot;modal-header&quot;&gt;
+                &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;modal&quot; aria-hidden=&quot;true&quot;&gt;&amp;times;&lt;/button&gt;
+                &lt;h4 class=&quot;modal-title&quot;&gt;添加英雄&lt;/h4&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;modal-body&quot;&gt;
+                &lt;form class=&quot;form-horizontal&quot; id=&quot;addHeroForm&quot;&gt;
+                    &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;label for=&quot;inputEmail3&quot; class=&quot;col-sm-2 control-label&quot;&gt;英雄名&lt;/label&gt;
+                        &lt;div class=&quot;col-sm-10&quot;&gt;
+                            &lt;input type=&quot;text&quot; class=&quot;form-control&quot; name=&quot;name&quot; required=&quot;required&quot;
+                                   placeholder=&quot;输入英雄名...&quot;&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;label for=&quot;inputPassword3&quot; class=&quot;col-sm-2 control-label&quot;&gt;英雄性别&lt;/label&gt;
+                        &lt;div class=&quot;col-sm-10&quot;&gt;
+
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;div class=&quot;col-sm-10&quot;&gt;
+                                    &lt;select name=&quot;gender&quot; id=&quot;inputgender&quot; class=&quot;form-control&quot;
+                                            required=&quot;required&quot;&gt;
+                                        &lt;option value=&quot;&quot;&gt;-- Select One --&lt;/option&gt;
+                                        &lt;option value=&quot;男&quot;&gt;男&lt;/option&gt;
+                                        &lt;option value=&quot;女&quot;&gt;女&lt;/option&gt;
+                                    &lt;/select&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;div class=&quot;col-sm-offset-2 col-sm-10&quot;&gt;
+                            &lt;button type=&quot;submit&quot; id=&quot;addHero&quot; class=&quot;btn btn-success&quot;&gt;提交&lt;/button&gt;
+                            &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; data-dismiss=&quot;modal&quot;&gt;关闭&lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;modal-footer&quot;&gt;
+
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- 2、新增英雄静态布局-结束 --&gt;
+</code></pre>
+<h4 id="-bootstrap-js-">导入bootStrap.js文件</h4>
+<blockquote>
+<p>在index.html中导入bootstrap.js</p>
+</blockquote>
+<pre><code class="lang-javascript">&lt;script src=&quot;https://www.jq22.com/jquery/jquery-1.10.2.js&quot;&gt;&lt;/script&gt;
+// 注意：一定要先导入jquery后导入bootstrap-3.3.4.js,因为bootstrap-3.3.4.js依赖于1.9版本以上的jquery库
+&lt;script src=&quot;https://www.jq22.com/jquery/bootstrap-3.3.4.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h4 id="-">添加英雄接口文档说明</h4>
+<p>浏览器中打开 <code>http://157.122.54.189:9092/upload/ajaxdoc/index.html#api-02-英雄信息管理-addHero</code>即可查看添加英雄Api接口说明</p>
+<h4 id="-">实现添加英雄逻辑</h4>
+<blockquote>
+<p>在index.html中的 <code>$(function(){})</code>中增加如下代码</p>
+</blockquote>
+<pre><code class="lang-javascript">//  给form表单注册submit事件
+$(&#39;#addHeroForm&#39;).submit(function (e) {
+    // 阻止form表单默认行为，方式页面自己刷新导致数据丢失
+    e.preventDefault();
+    // 利用serialize()获取表单中的数据
+    let heroBody = $(&#39;#addHeroForm&#39;).serialize();
+    // 为了数据完整性，保留img属性，值为空
+    heroBody.img = &#39;&#39;;
+    // 执行新增数据请求
+    $.post(&#39;http://127.0.0.1:3001/addHero&#39;, heroBody, function (resData) {
+        // 处理服务器异常提示
+        if (resData.code == 500) {
+            alert(resData.msg);
+            return;
+        }
+
+        alert(&#39;添加成功&#39;);
+        // 重新获取所有英雄数据
+        getList();
+        // 关闭bootstrap中的模态窗口
+        $(&#39;#myModal&#39;).modal(&#39;hide&#39;);
+        // 重置表单数据
+        document.querySelector(&#39;#addHeroForm&#39;).reset();
+    })
+})
+</code></pre>
+<h4 id="-">结果验证</h4>
+<blockquote>
+<p>在浏览器中打开index.html，操作效果与前面动图保持一直表示成功</p>
+</blockquote>
+<h3 id="3-">3. 删除英雄效果</h3>
+<h4 id="-">功能效果演示</h4>
+<p><img src="imgs\hero-delete.gif" alt="del"></p>
+<h4 id="-onclick-">给删除按钮添加onclick事件</h4>
+<blockquote>
+<p>在index.html中找到 删除按钮html结构:<code>&lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;删除&lt;/button&gt;</code></p>
+<p>给其添加onclick事件，当用户点击删除按钮就会触发delHero方法，并把英雄id通过${item.id}传入进去，代码如下：</p>
+</blockquote>
+<pre><code class="lang-html">&lt;button type=&quot;button&quot; onclick=&quot;delHero(${item.id})&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;删除&lt;/button&gt;
+
+&lt;!-- 注意其中${item.id} 在浏览器中运行的最终代码会变为英雄的真正id，例如程咬金这条数据上的删除按钮：
+ &lt;button type=&quot;button&quot; onclick=&quot;delHero(2)&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;删除&lt;/button&gt;  --&gt;
+</code></pre>
+<h4 id="-">删除英雄接口文档说明</h4>
+<p>浏览器中打开 <code>http://157.122.54.189:9092/upload/ajaxdoc/index.html#api-02-英雄信息管理-delHeroById</code>即可查看删除英雄Api接口说明</p>
+<h4 id="-delhero-">实现delHero方法逻辑</h4>
+<blockquote>
+<p>在index.html中的 <code>$(function(){})</code>中增加如下代码</p>
+</blockquote>
+<pre><code class="lang-javascript"> // 3.0 删除英雄
+function delHero(paramsid) {
+    $.get(&#39;http://127.0.0.1:3001/delHeroById&#39;, { id: paramsid }, function (resData) {
+        if (resData.code != 200) {
+            alert(resData.msg);
+            return;
+        }
+
+        alert(&#39;删除成功&#39;);
+        // 重新刷写一下列表，将删除的数据在页面中清除
+        getList();
+    })
+}
+</code></pre>
+<h3 id="4-">4. 上传英雄头像</h3>
+<h4 id="-">功能效果演示</h4>
+<p><img src="imgs\hreo-upload.gif" alt="hup"></p>
+<h4 id="-">静态结构</h4>
+<blockquote>
+<p>将以下静态结构拷贝到 index.html的</p>
+<p><code>&lt;!-- 3、上传头像静态布局-开始 --&gt;</code></p>
+<p><code>&lt;!-- 3、上传头像静态布局-结束 --&gt;</code></p>
+<p>中间</p>
+</blockquote>
+<pre><code class="lang-html">&lt;!-- 3、上传头像静态布局-开始 --&gt;
+&lt;div class=&quot;modal fade&quot; id=&quot;uploadModal&quot;&gt;
+    &lt;div class=&quot;modal-dialog&quot;&gt;
+        &lt;div class=&quot;modal-content&quot;&gt;
+            &lt;div class=&quot;modal-header&quot;&gt;
+                &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;modal&quot; aria-hidden=&quot;true&quot;&gt;&amp;times;&lt;/button&gt;
+                &lt;h4 class=&quot;modal-title&quot;&gt;上传头像&lt;/h4&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;modal-body&quot;&gt;
+                &lt;input type=&quot;file&quot; id=&quot;file_name&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;modal-body&quot;&gt;
+                &lt;button type=&quot;button&quot; id=&quot;btnupload&quot; class=&quot;btn btn-primary&quot;&gt;提交&lt;/button&gt;
+                &lt;button type=&quot;button&quot; data-dismiss=&quot;modal&quot; class=&quot;btn btn-default&quot;&gt;取消&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;modal-footer&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- 3、上传头像静态布局-结束 --&gt;
+</code></pre>
+<h4 id="-">修改列表页上上传头像按钮</h4>
+<blockquote>
+<p>作用:  给每一条英雄数据中的 <code>上传按钮</code> 注册点击事件</p>
+</blockquote>
+<pre><code class="lang-html">//将列表页上上传头像按钮中的按钮添加点击事件：onclick=&quot;showUpladModal(${item.id})&quot;
+&lt;button type=&quot;button&quot; onclick=&quot;showUpladModal(${item.id})&quot; class=&quot;btn btn-sm btn-warning&quot;&gt;上传头像&lt;/button&gt;
+&lt;!-- 注意其中${item.id} 在浏览器中运行的最终代码会变为英雄的真正id，例如程咬金这条数据上的删除按钮：
+&lt;button type=&quot;button&quot; onclick=&quot;showUpladModal(${2})&quot; class=&quot;btn btn-sm btn-warning&quot;&gt;上传头像&lt;/button&gt; --&gt;
+</code></pre>
+<h4 id="-showupladmodal-">定义showUpladModal方法</h4>
+<blockquote>
+<p>作用：在showUpladModal方法中打开文件上传窗口</p>
+</blockquote>
+<pre><code class="lang-javascript">// 4.0 打开上传窗口
+// 4.0.1 定义一个全局变量用来存放英雄id
+var globalHeroID = 0;
+function showUpladModal(heroID) {
+    // 找到 id 为 uploadModal 的元素调用bootstrap中的modal方法，传入固定值 show 即可打开模态窗口
+    $(&#39;#uploadModal&#39;).modal(&#39;show&#39;);
+    // 点击哪个英雄数据的上传头像按钮，就将该英雄id赋值给全局变量globalHeroID保存起来，方便在当前页面中的其他function中使用
+    globalHeroID = heroID;
+}
+</code></pre>
+<h4 id="-click-">给上传窗口中的 <code>提交</code>注册click事件</h4>
+<blockquote>
+<p>作用：在$(function(){})中给提交按钮注册事件，执行文件上传操作</p>
+</blockquote>
+<pre><code class="lang-javascript">$(function(){
+  $(&#39;#btnupload&#39;).click(function () {
+     // 1.0 获取用户选择的文件
+     var file = document.querySelector(&#39;#file_name&#39;).files[0];
+     // 2.0 如果用户没选择文件,则提示
+     if (!file) {
+         alert(&#39;请选择要上传的头像&#39;);
+         return;
+     }
+
+     // 3.0 因为文件不是文本字符串,所以需要一个formData对象来构造
+     var formData = new FormData();
+     formData.append(&#39;file_data&#39;, file);
+
+     // 4.0 将文件上传到服务器
+     $.ajax({
+         url: &#39;http://127.0.0.1:3001/uploadFile&#39;,
+         data: formData,
+         method: &#39;POST&#39;,
+         contentType: false, // 因为jquery默认请求contentType为x-www-form-urlencoded，它通常处理的是字符串，此处是一个文件所以需要设置false禁止设置
+         processData: false, // 此参数jquery默认为true会对传入的data转换为请求字符串，此处是一个文件不需要转化成字符串
+         success: function (resData) {
+             if (resData.code == 500) {
+                 alert(resData.msg);
+                 return;
+             }
+             // console.log(heroID);
+             console.log(resData.src);
+             $(&#39;#file_name&#39;).val(&#39;&#39;);
+             if(globalHeroID &lt;=0){
+                 alert(&#39;英雄ID错误，请检查&#39;);
+                 return;
+             }
+             // 获取到头像上传路径以后，需要定义一个新方法updateHero，将此路径更新到英雄数据中去
+             updateHero(globalHeroID, resData.src);
+         }
+     });
+ })
+})
+</code></pre>
+<h4 id="updatehero-">updateHero方法更新头像路径</h4>
+<blockquote>
+<p>作用：上传接口返回图片路径以后，需要在此方法中将路径更新到英雄数据中去</p>
+</blockquote>
+<pre><code class="lang-javascript">function updateHero(heroID, imgpath) {
+    // 1.0 根据英雄id获取英雄的id,name,gender老数据
+    $.get(&#39;http://127.0.0.1:3001/getHeroById&#39;, { id: heroID }, function (resData) {
+        // 1.0.1 构造一个完整的英雄对象，补齐img头像地址
+        let heroBody = {
+            id: heroID,
+            name: resData.data.name,
+            gender: resData.data.gender,
+            img: imgpath
+        }
+        //  2.0 将heroBody英雄数据通过post请求重新更新英雄所有数据
+        $.post(&#39;http://127.0.0.1:3001/updateHero&#39;, heroBody, function (res) {
+            if (res.code == 500) {
+                alert(res.msg);
+                return;
+            }
+            // 2.0.1 在英雄列表中将英雄头像地址赋值给其对应的img标签，从而在页面正常显示英雄头像
+            $(&#39;#img&#39; + heroID).attr(&#39;src&#39;, imgpath);
+
+            // 2.0.2 调用bootstrop的modal方法传入hide 关闭模态窗口 （固定写法）
+            $(&#39;#uploadModal&#39;).modal(&#39;hide&#39;);
+        })
+    })
+</code></pre>
+<h2 id="-">文件上传</h2>
+<p>大家所浏览的任何网页上的图片，下载的资源，均需要先由资源拥有者上传到服务器上后才能被上网用户所获得，所以我们在开发一个网站时，利用Ajax进行文件上传是必不可少的一种编码操作，接下来我们一起实现一个文件上传功能的编码。</p>
+<h3 id="-">实现效果演示</h3>
+<p><img src="imgs\upload.gif" alt="upload"></p>
+<h3 id="-">实现步骤</h3>
+<h4 id="-uploadfile-html-">创建uploadFile.html文件</h4>
+<blockquote>
+<p>使用 <code>&lt;input type=&quot;file&quot; id=&quot;img&quot;&gt;</code> 来让浏览器读取电脑硬盘中的文件</p>
+</blockquote>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+     &lt;p&gt;
+      &lt;!-- 1.0 准备 file类型的input 元素，用户通过它可以选择客户端电脑硬盘上的文件到浏览器中 --&gt;
+        &lt;input type=&quot;file&quot; id=&quot;img&quot;&gt;
+    &lt;/p&gt;
+    &lt;!-- 2.0 当用户点击此按钮时将 &lt;input type=&quot;file&quot; id=&quot;img&quot;&gt;
+        中读取到的文件上传到服务器，所以必须给此按钮注册click实践，js代码在下方实现 --&gt;
+    &lt;button id=&quot;uploadButton&quot;&gt;上传&lt;/button&gt;&lt;br&gt;
+    &lt;hr&gt;
+    &lt;!-- 3.0 当服务器响应回来图片的地址JSON数据后，将图片地址设置到img的src属性中就能正常显示图片了 --&gt;
+    &lt;img src=&quot;&quot; alt=&quot;&quot; id=&quot;imgsrc&quot;&gt;  
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+<h4 id="-">编写上传代码</h4>
+<blockquote>
+<p>文件上传Api接口说明文档：<code>http://157.122.54.189:9092/upload/ajaxdoc/index.html#api-03-上传-uploadFile</code></p>
+</blockquote>
+<pre><code class="lang-javascript"> &lt;!-- 1.0 导入jquery --&gt;
+    &lt;script src=&quot;https://www.jq22.com/jquery/jquery-1.10.2.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            // 2.0 给id为uploadButton的按钮注册点击事件
+            $(&#39;#uploadButton&#39;).click(function () {
+                // 2.0.1 获取上传的文件
+                var file = document.querySelector(&#39;#img&#39;).files[0];
+                // 2.0.2 判断是否选择了文件
+                if (!file) {
+                    return alert(&#39;请选择一个文件&#39;);
+                }
+
+                // 2.0.3 上传操作
+                // 2.0.3.1 构造一个FormData对象，因为文件不是字符串，所以需要FormData来构造(上传的固定代码)
+                var formData = new FormData();
+                //  2.0.3.2 添加文件到formData(上传的固定代码)
+                // 注意:其中file_data要与上传Api文档说明中的参数名称一致
+                formData.append(&#39;file_data&#39;, file);
+                // 2.0.3.3 将formData通过ajax发送给服务器完成文件上传功能
+                $.ajax({
+                    url: &#39;http://127.0.0.1:3001/uploadFile&#39;,//地址从api文档中查找
+                    method: &#39;post&#39;,//请求方式从api文档中查找
+                    contentType: false,//上传文件时此参数默认为false
+                    processData: false,//上传文件时此参数默认为false
+                    data: formData,//将文件上传给服务器
+                    success: function (resData)  //  服务器响应成功后的回调函数，resData存放了服务器响应的JSON数据
+                    {
+                        /*
+                            resData格式：
+                            {
+                              &quot;code&quot;:200,
+                              &quot;msg&quot;:&quot;上传成功&quot;,
+                              &quot;src&quot;:&quot;http:\127.0.0.1:3001\assets\uploads\m.jpg&quot;
+                            }
+                        */
+
+                        // 3.0 将图片回显到浏览器中
+                        $(&#39;#imgsrc&#39;).attr(&#39;src&#39;, resData.src);
+                    }
+                })
+            })
+        })
+    &lt;/script&gt;
+</code></pre>
+<h1 id="ajax-3">Ajax知识分布3</h1>
+<h2 id="art-template-">art-template模板引擎</h2>
+<p>如果按照 英雄管理系统中的英雄列表那样去渲染数据的话，碰到复杂功能编码就会变得很复杂，并且由于要修改字符串中的内容，没有编辑器提示后期维护，加新功能（例如咱们给上传、删除按钮注册click事件）也变得不方便，所以art-template模板引擎就能解决此问题</p>
+<h3 id="art-template-">art-template官网</h3>
+<p><a href="http://aui.github.io/art-template/zh-cn/docs/index.html">http://aui.github.io/art-template/zh-cn/docs/index.html</a></p>
+<h3 id="art-template-">art-template在线地址</h3>
+<blockquote>
+<p>可以在html页面中 通过  <code>&lt;script src=&quot;https://unpkg.com/art-template/lib/template-web.js&quot;&gt;&lt;/script&gt;</code>导入</p>
+</blockquote>
+<p><a href="https://unpkg.com/art-template/lib/template-web.js">https://unpkg.com/art-template/lib/template-web.js</a></p>
+<h3 id="art-template-">art-template 标准语法</h3>
+<pre><code class="lang-javascript">{{value}}  // 输出value变量的值
+{{data.key}}  // 输出data对象中key属性的值
+{{data[&#39;key&#39;]}} // 输出data对象中key属性的值
+{{a ? b : c}} // 三元运算符
+{{a || b}}  // 逻辑或运算
+{{a + b}}  // 算术运算符
+</code></pre>
+<h3 id="art-template-">art-template体验</h3>
+<ul>
+<li><p>1、新建一个html页面，通过script标签导入template-web.js文件</p>
+</li>
+<li><p>2、定义一个符合art-template格式要求的模板（其中id可以自己定义）</p>
+</li>
+<li><p>3、 使用template(模板，数据)方法传入 模板和数据后会生成html字符串后添加到网页中</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;
+
+    &lt;/div&gt;
+    &lt;!-- 1.0 通过script标签导入template-web.js文件 --&gt;
+    &lt;script src=&quot;https://unpkg.com/art-template/lib/template-web.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- 2.0 定义一个符合art-template格式要求的模板（其中id可以自己定义） --&gt;
+    &lt;script id=&quot;tmp&quot; type=&quot;text/html&quot;&gt;
+        &lt;!-- 3.0.2 输出 tmplate()方法中第二个参数传入对象中的text属性的值 --&gt;
+        {{text}}
+    &lt;/script&gt;
+
+    &lt;!-- 3.0 使用template(模板，数据)方法传入 模板和数据后会生成html字符串返回 
+    注意参数：
+             模板：模板填写 第2步中定义的模板id即可
+             数据：可以传入 对象{},数组[]等 均可
+    --&gt;
+    &lt;script&gt;
+        // 3.0.1 调用template方法生成最终html字符串存入到resHtml变量中
+        var resHtml = template(&#39;tmp&#39;, { text: &quot;这是传入给art-template的数据&quot; })
+
+        // 3.0.2 找到第2步中的id为tmp模板，在里边填写art-template标准语法输出text变量值        
+
+        // 3.0.3 将resHtml中的字符串添加到网页中的id为app的div中
+        document.querySelector(&#39;#app&#39;).innerHTML = resHtml;
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<h3 id="-">循环语法</h3>
+<pre><code class="lang-javascript">{{each target}}
+    {{$index}} {{$value}}
+{{/each}}
+
+// 说明：target 支持 array(数组) 与 object（对象） 的迭代 
+</code></pre>
+<ul>
+<li><p>循环语法-用法举例</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;
+
+    &lt;/div&gt;
+
+    &lt;!-- 1.0 通过script标签导入template-web.js文件 --&gt;
+    &lt;script src=&quot;https://unpkg.com/art-template/lib/template-web.js&quot;&gt;&lt;/script&gt;
+
+     &lt;!-- 2.0 定义一个符合art-template格式要求的模板（其中id可以自己定义） --&gt;
+     &lt;script id=&quot;tmp&quot; type=&quot;text/html&quot;&gt;
+        &lt;!-- 2.0.1 遍历语法，其中list变量要在template()方法第二个参数中存在   --&gt;
+        {{each list}}
+            {{$index}} {{$value}} &lt;br /&gt;
+        {{/each}}
+    &lt;/script&gt;
+
+    &lt;!-- 3.0 使用template(模板，数据)方法传入 模板和数据后会生成html字符串返回 
+    注意参数：
+             模板：模板填写 第2步中定义的模板id即可
+             数据：可以传入 对象{},数组[]等 均可
+    --&gt;
+    &lt;script&gt;
+        // 3.0.1 定义对象
+       var data = { list:[&#39;程咬金&#39;,&#39;白起&#39;] };
+
+        // 3.0.2 调用template方法,传入data对象生成最终html字符串存入到resHtml变量中
+        var resHtml = template(&#39;tmp&#39;, data)
+
+        // 3.0.3 将resHtml中的字符串添加到网页中的id为app的div中
+        document.querySelector(&#39;#app&#39;).innerHTML = resHtml;
+
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<h2 id="-art-template-">使用art-template改造英雄案例列表</h2>
+<ul>
+<li>完整代码</li>
+</ul>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../libs/bootstrap/css/bootstrap.css&quot;&gt;
+    &lt;style&gt;
+        .container {
+            width: 900px;
+            min-height: 600px;
+            margin: 20px auto;
+        }
+        .table img {
+            width: 40px;
+            height: 40px;
+        }
+        .table td,
+        .table th {
+            text-align: center;
+        }
+        .table td:last-child {
+            width: 200px;
+        }
+        .heroName {
+            width: 200px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- 1、英雄列表- 开始 --&gt;
+        &lt;div class=&quot;panel panel-primary&quot;&gt;
+            &lt;!-- Default panel contents --&gt;
+            &lt;div class=&quot;panel-heading&quot;&gt;英雄列表管理&lt;/div&gt;
+            &lt;div class=&quot;panel-body&quot;&gt;
+                &lt;div class=&quot;row&quot;&gt;
+                    &lt;div class=&quot;col-md-6&quot;&gt;
+                        &lt;div class=&quot;input-group&quot;&gt;
+                            &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;heroName&quot; placeholder=&quot;请输入要搜索的英雄名称&quot;&gt;
+                            &lt;span class=&quot;input-group-btn&quot;&gt;
+                                &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot;&gt;搜索&lt;/button&gt;
+                            &lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-md-3 col-md-offset-3&quot;&gt;
+                        &lt;button type=&quot;button&quot; class=&quot;btn btn-lg btn-success&quot; data-toggle=&quot;modal&quot;
+                            data-target=&quot;#myModal&quot;&gt;添加英雄&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Table --&gt;
+            &lt;table class=&quot;table&quot;&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;编号&lt;/th&gt;
+                        &lt;th&gt;英雄名&lt;/th&gt;
+                        &lt;th&gt;英雄性别&lt;/th&gt;
+                        &lt;th&gt;英雄头像&lt;/th&gt;
+                        &lt;th&gt;操作&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody id=&quot;tbody&quot;&gt;                   
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;!-- 1、英雄列表- 结束 --&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;../libs/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../libs/art-template/template-web.js&quot;&gt;&lt;/script&gt;
+   &lt;!-- 1.0 定义英雄列表数据显示模板-使用循环语法 --&gt;
+    &lt;script id=&quot;tmp&quot; type=&quot;text/html&quot;&gt;
+    {{each data}}
+    &lt;tr&gt;
+        &lt;td&gt;{{$value.id}}&lt;/td&gt;
+        &lt;td&gt;{{$value.name}}&lt;/td&gt;
+        &lt;td&gt;{{$value.gender}}&lt;/td&gt;
+        &lt;td&gt;&lt;img src=&quot;{{$value.img}}&quot;&gt;&lt;/td&gt;
+        &lt;td&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-warning&quot;&gt;上传头像&lt;/button&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-danger&quot;&gt;删除&lt;/button&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    {{/each}}
+
+    &lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            getList();
+        })
+
+        function getList() {
+            // 1.0 通过 $.get()方法完成http://127.0.0.1:3001/getHeroList 地址的请求，获取到服务器的英雄JSON数据后会自动保存到resData中
+            $.get(&#39;http://127.0.0.1:3001/getHeroList&#39;, null, function (resData) {
+                //1.0.1、判断服务器响应code，如果是500则表示服务器处理失败了，把处理结果resData.msg通过alert提示给用户
+                if (resData.code == 500) {
+                    alert(resData.msg);
+                    return;
+                }
+
+                //2.0 调用art-template模板中的 template方法传入resData.data
+                /*
+                resData格式：
+                {
+                    &quot;code&quot;: 200,
+                    &quot;msg&quot;: &quot;请求成功&quot;,
+                    &quot;data&quot;: [
+                            {
+                            &quot;name&quot;: &quot;程咬金&quot;,
+                            &quot;gender&quot;: &quot;男&quot;,
+                            &quot;img&quot;: &quot;http://127.0.0.1:3001/assets/uploads/222.jpg&quot;,
+                            &quot;id&quot;: 2
+                            }
+                    ]
+                }
+                */
+                var resHtml = template(&#39;tmp&#39;, resData)
+
+                // 2.0.3 将resHtml的表格结构字符串覆盖到id为heroList的tbody中
+                $(&#39;#tbody&#39;).html(resHtml);
+            })
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+<h2 id="ajax-xmlhttprequest-">Ajax本质：XMLHttpRequest对象</h2>
+<h3 id="xmlhttprequest-">XMLHttpRequest对象的作用</h3>
+<blockquote>
+<p>XMLHttpRequest对象 简称 XHR，最低可以兼容到IE7</p>
+<p>浏览器兼容性查看：<code>https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest</code></p>
+</blockquote>
+<p>之前我们使用jQuery中的  <code>$.get(),$.post(),$.ajax()</code>方法内部本质上都是使用<strong>XMLHttpRequest</strong>对象与服务器来进行通讯的。也就是我们说的Ajax的本质其实就是利用<strong>XMLHttpRequest</strong>对象与服务器进行数据交互。</p>
+<p> 所以我们这一节主要是深挖一下如何通过<strong>XMLHttpRequest</strong>对象与服务器通讯，掌握其固定的写法步骤。面试涉及到Ajax的问题时必问</p>
+<h3 id="xhr-get-">XHR发送Get请求基本步骤</h3>
+<blockquote>
+<p>实现效果：利用XMLHttpRequest对象实现Ajax请求<a href="http://127.0.0.1:3001/getHeroSkin，获取所有英雄皮肤数据">http://127.0.0.1:3001/getHeroSkin，获取所有英雄皮肤数据</a></p>
+<p>Api接口文档：<code>http://157.122.54.189:9092/upload/ajaxdoc/index.html#api-01-Ajax初体验-getHeroSkin</code></p>
+</blockquote>
+<pre><code class="lang-javascript">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;script&gt;
+        // 1.0 创建XHR对象
+        var XHR = new XMLHttpRequest();
+
+        // 2.0 设置请求参数
+        /*
+            第一个参数: Get
+            第二个参数：请求的URL
+        */
+        XHR.open(&#39;Get&#39;, &#39;http://127.0.0.1:3001/getHeroSkin&#39;);
+
+        // 3.0 发送请求
+        XHR.send();
+
+        // 4.0 接收服务器响应回来的数据
+        XHR.onload = function () {
+            console.log(typeof XHR.responseText); // string类型
+            console.log(XHR.responseText);  // 服务器响应回来的JSON数据字符串
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="xhr-get-">XHR发送带参数的Get请求</h3>
+<blockquote>
+<p>实现业务效果：利用XMLHttpRequest对象实现Ajax请求<a href="http://127.0.0.1:3001/getHeroSkin，利用`?heroName=白起`参数告诉服务器只需要返回白起的皮肤数据即可">http://127.0.0.1:3001/getHeroSkin，利用`?heroName=白起`参数告诉服务器只需要返回白起的皮肤数据即可</a></p>
+<p><strong>核心代码:  XHR.open(&#39;Get&#39;, &#39;<code>http://127.0.0.1:3001/getHeroSkin?heroName=白起</code>&#39;); 中的 <code>?heroName=白起</code>就是参数</strong></p>
+<p>了解多个参数格式: <code>?page=0&amp;size=10</code>，方便读懂api说明文档</p>
+</blockquote>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;script&gt;
+        // 1.0 创建XHR对象
+        var XHR = new XMLHttpRequest();
+
+        // 2.0 设置请求相关参数
+        /*
+            第一个参数: Get,Post
+            第二个参数：请求的URL,?heroName=白起就是参数
+        */
+        XHR.open(&#39;Get&#39;, &#39;http://127.0.0.1:3001/getHeroSkin?heroName=白起&#39;);
+
+        // 3.0 发送请求
+        XHR.send();
+
+        // 4.0 接收服务器响应回来的数据
+        XHR.onload = function () {
+            console.log(typeof XHR.responseText); // string类型
+            console.log(XHR.responseText);  // 服务器响应回来的JSON数据字符串
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="url-">URL的参数说明</h3>
+<blockquote>
+<p>定义：URL参数(也叫查询字符串)指的是在URL地址后面通过<strong><code>？</code></strong>号加上的用于发送给服务器的字符串</p>
+<p>格式：将英文的<strong><code>？</code></strong>添加到URL末尾，然后在<strong><code>？</code></strong>后面加上 <strong>参数名=参数值</strong>这种格式的字符串，如果想要添加多个参数的话，请使用<strong><code>&amp;</code></strong>相连，如： <code>参数名=参数值&amp;参数名=参数值</code></p>
+<p>举例：</p>
+<p>1、不带参数的URL</p>
+<p>​    <code>http://127.0.0.1:3001/getHeroSkin</code></p>
+<p>2、带一个参数的URL</p>
+<p><code>http://127.0.0.1:3001/getHeroSkin?heroName=白起</code></p>
+<p>3、带多个参数的URL</p>
+<p><code>http://127.0.0.1:3001/getHeroSkin?id=3&amp;heroName=白起</code></p>
+</blockquote>
+<h3 id="url-">URL编码</h3>
+<blockquote>
+<p>URL编码的作用：为了保证发送给服务器的URL及其参数不会被服务器解析错误，URL地址中，只允许出现英文相关的字母，数字，- _ . ~4个特殊字符以及所有的保留字符，如果出现了中文，则会对中文进行URL编码</p>
+<p>什么是URL编码：使用<code>%加英文和数字</code>去表示中文等<strong><code>非英文字符</code></strong></p>
+</blockquote>
+<pre><code class="lang-html">http://127.0.0.1:3001/getHeroSkin?heroName=白起
+// 经过URL编码以后，参数中的 中文字符 “白起” 被编码成了 %E7%99%BD%E8%B5%B7
+http://127.0.0.1:3001/getHeroSkin?heroName=%E7%99%BD%E8%B5%B7
+</code></pre>
+<p><strong>JavaScript如何对URL进行编码和解码？</strong></p>
+<blockquote>
+<p>在发送Ajax请求的时候浏览器会自动对URL进行编码，但有些时候需要开发人员手动对URL进行编码</p>
+</blockquote>
+<ul>
+<li><p><strong>encodeURI</strong>() 对URL编码</p>
+<blockquote>
+<p>语法：encodeURI(需要编码的URL字符串);</p>
+</blockquote>
+</li>
+<li><p><strong>decodeURI()</strong>对URL进行解码</p>
+<blockquote>
+<p>语法：decodeURI(编码后的URL字符串);</p>
+</blockquote>
+</li>
+<li><p>举例</p>
+<pre><code class="lang-javascript">  &lt;script&gt;
+        var url = &#39;http://127.0.0.1:3001/getHeroSkin?heroName=白起&#39;;
+
+        // 利用encodeURI()函数对URL进行编码
+        var urlEncode = encodeURI(url);
+        // 输出结果：http：http://127.0.0.1:3001/getHeroSkin?heroName=%E7%99%BD%E8%B5%B7
+        console.log(urlEncode) 
+
+        // 将URL编码后的url字符串解码出正常的URL     
+        var urlDecode = decodeURI(urlEncode);
+           // 输出结果：http://127.0.0.1:3001/getHeroSkin?heroName=白起
+        console.log(urlDecode);
+
+    &lt;/script&gt;
+</code></pre>
+</li>
+</ul>
+<h3 id="json">JSON</h3>
+<blockquote>
+<p>JSON 的英文全称是 <strong>J</strong>ava<strong>S</strong>cript <strong>O</strong>bject <strong>N</strong>otation（JavaScript对象表示法），是一种简单的数据存储格式</p>
+<p>通俗来讲:<code>JSON就是JavaScript对象或数组的字符串表示法</code>  是一种轻量级的数据交换格式，在Ajax请求中，服务器响应回来的数据格式通常是JSON为主。</p>
+</blockquote>
+<h4 id="json-js-">JSON字符串如何表示一个JS对象</h4>
+<blockquote>
+<p>对象结构在JSON字符串描述中是以{} 来表示的</p>
+<p>数据为 {key:value,key:value,....}的键值对结构，其中<strong>key</strong>必须用英文双引号包裹起来，<strong>value</strong> 可以是数字，字符串，布尔值，null，数组，对象6种类型，不能包含undefined和function其中如果是<strong>字符串类型</strong>必须使用英文双引号包括起来。</p>
+</blockquote>
+<p>举例：用JSON字符串描述一个对象</p>
+<pre><code class="lang-javascript">// JSON字符串描述，注意：不支持undefined和function
+// 描述简单对象
+`
+{
+    &quot;name&quot;:&quot;刘备&quot;,
+    &quot;age&quot;:3000,
+    &quot;isman&quot;:true    
+} `
+// 描述复杂对象
+ `
+{   
+    &quot;brother&quot;:[&quot;关于&quot;,&quot;张飞&quot;],
+    &quot;child&quot;:{
+        &quot;name&quot;:&quot;刘婵&quot;,
+        &quot;age&quot;:2980
+    }
+}
+`
+// 描述简单和复杂对象
+ `
+{
+    &quot;name&quot;:&quot;刘备&quot;,
+    &quot;age&quot;:3000,
+    &quot;isman&quot;:true,
+    &quot;brother&quot;:[&quot;关于&quot;,&quot;张飞&quot;],
+    &quot;child&quot;:{
+        &quot;name&quot;:&quot;刘婵&quot;,
+        &quot;age&quot;:2980
+    }
+}
+`
+</code></pre>
+<h4 id="json-js-">JSON字符串如何表示一个JS数组</h4>
+<blockquote>
+<p>数组结构在JSON字符串描述中是以[] 来表示的</p>
+<p>数据为[&quot;刘备&quot;,3000,true,null,[&quot;张飞&quot;,&quot;关于&quot;],{name:&quot;刘婵&quot;,age:2980}]</p>
+<p>数组中的数据类型为<strong>数字，字符串，布尔值，null，数组，对象</strong>这6种类型</p>
+</blockquote>
+<pre><code class="lang-javascript">// JSON字符串表示一个数组
+`[&quot;张飞&quot;,&quot;关羽&quot;]`
+`[&quot;刘备&quot;,3000,true,null]`
+`[&quot;刘备&quot;,{&quot;name&quot;:&quot;刘婵&quot;,&quot;age&quot;:2980}]`
+`[&quot;刘备&quot;,[&quot;张飞&quot;,&quot;关羽&quot;]]`
+`[&quot;刘备&quot;,3000,true,null,[&quot;张飞&quot;,&quot;关羽&quot;],{&quot;name&quot;:&quot;刘婵&quot;,&quot;age&quot;:2980}]`
+</code></pre>
+<h4 id="javascript-json-">JavaScript中的JSON对象</h4>
+<blockquote>
+<p>JSON本质上是JS对象或数组的一种字符串表示，我们可以使用JSON对象来对二者进行互相转换</p>
+<ul>
+<li><p>可以使用JSON对象中的parse()方法来将JSON字符串转换为JS对象或数组</p>
+</li>
+<li><p>使用JSON对象中的stringify()方法来将JS对象或数组转换成JSON字符串</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>JSON的序列化</p>
+<blockquote>
+<p>定义：JSON.parse()方法实现将JSON字符串转换为JS对象或数组</p>
+</blockquote>
+</li>
+</ul>
+<pre><code class="lang-javascript">var arr = [[&quot;张飞&quot;,&quot;关于&quot;]];
+var arrJson = JSON.stringify(arr);
+console.log(arrJson);
+</code></pre>
+<ul>
+<li><p>JSON反序列化</p>
+<blockquote>
+<p>定义：JSON.stringify()方法实现将JS对象或数组转换成JSON字符串</p>
+</blockquote>
+</li>
+</ul>
+<pre><code class="lang-javascript"> var obj = {
+            name:&#39;刘备&#39;,
+            age:3000,
+            isman:true,
+            brother:[&#39;关于&#39;,&#39;张飞&#39;],
+            child:{
+                name:&#39;刘婵&#39;,
+                age:2980
+            }
+        }
+
+var objJson = JSON.stringify(obj);
+console.log(objJson);
+</code></pre>
+<h3 id="javascript-json-">JavaScript中的JSON对象应用示例</h3>
+<h3 id="xhr-post-">XHR发送POST请求</h3>
+<blockquote>
+<p>api接口文档：<code>http://157.122.54.189:9092/upload/ajaxdoc/index.html#api-01-Ajax初体验-addHeroSkin</code></p>
+</blockquote>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script&gt;
+        // 1.0 创建XHR对象
+        var XHR = new XMLHttpRequest();
+
+        // 2.0 设置请求参数
+        /*
+            第一个参数: Post
+            第二个参数：请求的URL            
+        */
+        XHR.open(&#39;POST&#39;, &#39;http://127.0.0.1:3001/addHeroSkin&#39;);
+
+        // 3.0 设置Content-Type类型为application/x-www-form-urlencoded（固定写法）
+        XHR.setRequestHeader(&#39;Content-Type&#39;,&#39;application/x-www-form-urlencoded&#39;)
+
+        // 4.0 发送请求
+        // 4.0.1 根据api接口文档定义好参数字符串,其中 cname和skin_name是api文档中定义的，值用户自己给
+        var heroParams = &#39;cname=程咬金&amp;skin_name=爱与正义&#39;;
+        // 4.0.2 将参数字符串发送给服务器
+        XHR.send(heroParams);
+
+        // 5.0 接收服务器响应回来的数据
+        XHR.onload = function () {
+            console.log(typeof XHR.responseText); // string类型
+            console.log(XHR.responseText);  // 服务器响应回来的JSON数据字符串
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="-ajax-">封装自己的ajax方法</h2>
+<h3 id="-ajax-">调用自定义ajax代码</h3>
+<pre><code class="lang-javascript">&lt;script src=&quot;http.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    // 发送get请求查找白起英雄皮肤数据
+    ajax({
+           type:&#39;get&#39;,
+           url:&#39;http：http://127.0.0.1:3001/getHeroSkin&#39;,
+           data:{heroName:&#39;白起&#39;},
+           success:function(resData){ 
+               console.log(resData); 
+           }
+        })
+
+   // 发送post请求，添加程咬金皮肤数据
+ ajax({
+         type: &#39;post&#39;,
+         url: &#39;http://127.0.0.1:3001/addHeroSkin&#39;,
+         data: { cname: &#39;程咬金&#39;, skin_name: &#39;爱与正义&#39; },
+         success: function (resData) {
+             console.log(resData);
+         }
+     })
+&lt;/script&gt;
+</code></pre>
+<h3 id="-ajax-">自定义Ajax方法封装</h3>
+<h4 id="-">准备参数对象转字符串方法</h4>
+<blockquote>
+<p>get请求和post请求将参数发送给服务器格式都是：key=value&amp;key1=value1的方式，在自定义方法中要求用户传入一个js对象 {key:value,key1:value}，所以在自定义ajax方法内部需要将js对象格式的参数转换成参数字符串格式需要自己定义一个方法去实现。</p>
+</blockquote>
+<pre><code class="lang-javascript">/*
+将js对象转成url参数字符串
+paramsObj参数格式举例：{heroName:&#39;白起&#39;}
+*/
+function objectToParamsString(paramsObj) {
+    let arr = [];
+    for (var key in paramsObj) {
+        arr.push(`${key}=${paramsObj[key]}`);
+    }
+    return arr.join(&#39;&amp;&#39;);
+}
+
+/*
+    调用举例：objectToParamsString({id:3,heroName:&#39;白起&#39;}) 
+    结果：id=3&amp;heroName=白起
+*/ 
+</code></pre>
+<h4 id="-ajax-">定义ajax方法</h4>
+<blockquote>
+<p>重要思路：1、充分考虑XMLHttpRequest对象进行get和post请求时的相同代码和不同代码</p>
+<p>2、参数提取到一个对象中   </p>
+<p>3、通过不同参数的传入做不同代码的执行，有三个地方需要做判断</p>
+<pre><code>- 设置xhr.open()的时候，如果是get请求并且options.data有值则要通过objectToParamsString(options.data)将参数对象转换成字符串后添加到URL参数中
+- 如果是post请求，则要加上固定代码： xhr.setRequestHeader(&#39;Content-Type&#39;, &#39;application/x-www-form-urlencoded&#39;);
+- 在xhr.send()时，如果是post类型并且options.data有值则要通过objectToParamsString(options.data)将参数对象转换成字符串后，将此字符串作为xhr.send(dataString)的 参数发送给服务器
+</code></pre><p>创建http.js，编写代码如下：</p>
+</blockquote>
+<pre><code class="lang-javascript">// 1.0 定义ajax函数能同时满足get和post的请求
+/*
+ options：{
+           type: 请求方式，get或者post
+           url: 请求的服务器url地址,
+           data:请求参数：{heroName:&#39;白起&#39;},
+           success:function(resData){ console.log(resData); } //请求成功回调函数
+        }
+*/
+function ajax(options) {
+    // 1.0 如果请求方式没有传，默认使用GET
+    if (!options.type) {
+        options.type = &#39;GET&#39;;
+    }
+
+    // url属性必须有值
+    if (!options.url) {
+        console.log(&#39;请设置ajax要请求的url地址&#39;);
+        return;
+    }
+
+    // 2.0 定义xhr对象
+    let xhr = new XMLHttpRequest();
+
+    // 3.0 设置ajax请求参数
+    // 3.0.1 如果有请求参数，则在options.url后边增加参数
+    if (options.data &amp;&amp; options.type.toUpperCase() == &#39;GET&#39;) {
+        let paramsStr = objectToParamsString(options.data);
+        xhr.open(options.type, options.url + &#39;?&#39; + paramsStr);
+    } else {
+        xhr.open(options.type, options.url);
+    }
+
+    /*
+    4.0 判断options.type类型，get请求做处理，post请求增加
+      Content-Type类型为application/x-www-form-urlencoded
+    */
+    if (options.type.toUpperCase() == &#39;POST&#39;) {
+        xhr.setRequestHeader(&#39;Content-Type&#39;, &#39;application/x-www-form-urlencoded&#39;);
+    }
+
+    // 5.0 发送ajax请求
+    // 5.0.1 如果是post请求，send()方法要带参数，get请求不带参数
+    if (options.type.toUpperCase() == &#39;POST&#39;) {
+        if (options.data) {
+            let paramsStr = objectToParamsString(options.data);
+            xhr.send(paramsStr);
+        }
+    } else {
+        xhr.send();
+    }
+
+    // 6.0 接手请求成功的回调函数
+    xhr.onload = function () {
+        let resString = xhr.responseText;
+        let resData = JSON.parse(resString);
+        options.success(resData);
+    }
+}
+
+/*
+将js对象转成url参数字符串
+paramsObj参数格式举例：{heroName:&#39;白起&#39;}
+*/
+function objectToParamsString(paramsObj) {
+    let arr = [];
+    for (var key in paramsObj) {
+        arr.push(`${key}=${paramsObj[key]}`);
+    }
+    return arr.join(&#39;&amp;&#39;);
+}
+</code></pre>
+<h2 id="jsonp-">JSONP跨域</h2>
+<h3 id="-">什么是同源</h3>
+<blockquote>
+<p>在编程中所谓<strong>同源</strong>是指：同时满足<strong><code>协议相同、域名相同、端口相同</code></strong>的两个URL我们就认为它们同源</p>
+<p>举例：我们有一个url： <a href="http://www.test.com:8080/pages/index.html">http://www.test.com:8080/pages/index.html</a></p>
+<p>与之同源的url：</p>
+<p><a href="http://www.test.com:8080/api/getlist">http://www.test.com:8080/api/getlist</a></p>
+<p>与之不同源的url：</p>
+<p>file:///C:/pages/index.html 不同源 (协议不同)</p>
+<p><a href="https://www.test.com:8080/pages/index.html">https://www.test.com:8080/pages/index.html</a> (协议不同)</p>
+<p> <a href="http://www.abc.com:8080/pages/index.html">http://www.abc.com:8080/pages/index.html</a> (域名不同)</p>
+<p><a href="http://www.test.com/pages/index.html">http://www.test.com/pages/index.html</a> (端口不同，不填写端口默认是80)</p>
+</blockquote>
+<h3 id="-">什么是同源策略</h3>
+<blockquote>
+<p>1995年，同源策略由 Netscape 公司引入浏览器。目前，所有浏览器都实行这个策略</p>
+<p><strong><code>同源政策的目的</code></strong>：是为了保证用户信息的安全，防止恶意的网站窃取数据。现在如果非同源，在以下方面将受到限制：</p>
+<ol>
+<li>Cookie、LocalStorage 等无法读取</li>
+<li>DOM 无法获得</li>
+<li>AJAX 请求在浏览器端有跨域限制</li>
+</ol>
+</blockquote>
+<h3 id="-">什么是跨域</h3>
+<blockquote>
+<p><strong>跨域</strong>与同源相反：只要在<strong><code>协议相同、域名相同、端口相同</code></strong>三个条件中有任何一个不满足的两个URL我们就认为它们会形成跨域</p>
+<p>在编程中，形成跨域的两个网页之间相互访问数据时会被浏览器的同源策略做屏蔽，会出现访问不成功的问题。</p>
+<p><strong>值得注意的是</strong>：网页中的 <code>&lt;script src=&quot;&quot;&gt;&lt;/script&gt;</code> 和 <code>&lt;img src=&quot;&quot; /&gt;</code> 请求其他不同源地址是不会被浏览器的同源策略拦截的</p>
+<p>但是我们在进行Ajax编程的时候跨域数据访问是经常碰到的，所以在Ajax编程过程中如何解决跨域问题是必须要掌握的。</p>
+</blockquote>
+<h3 id="-">跨域错误提示演示</h3>
+<pre><code class="lang-javascript">&lt;script src=&quot;../libs/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            /*
+             http://127.0.0.1:3001/getStudentsJSONP.js 是一个有跨域限制的网址
+             以下常规的ajax请求方式会被浏览器的同源策略进行跨域限制，所以会出现请求数据不成功问题
+             并且查看浏览器的console面板，会有一串报错信息：
+             Access to XMLHttpRequest at &#39;http://127.0.0.1:3001/getStudentsJSONP.js&#39; from origin &#39;null&#39; has
+              been blocked by CORS policy: No &#39;Access-Control-Allow-Origin&#39; header is present on the 
+              requested resource.
+            */ 
+            $.ajax({
+                type: &#39;GET&#39;,
+                url: &#39;http://127.0.0.1:3001/getStudentsJSONP.js&#39;,
+                success: function (resData) {
+                    console.log(resData)
+                }
+            })
+        })
+    &lt;/script&gt;
+</code></pre>
+<ul>
+<li><p>错误信息截图</p>
+<p><img src="imgs\24.png" alt="image-20201207124139046"></p>
+</li>
+</ul>
+<h3 id="-">实现跨域数据请求的两种方式</h3>
+<h4 id="cors-"><strong>CORS方式</strong></h4>
+<p>CORS是一个W3C标准，全称是&quot;跨域资源共享&quot;（Cross-origin resource sharing）</p>
+<p>新式浏览器都支持该功能，IE浏览器不能低于IE10</p>
+<p>CORS需要服务器支持，由后台程序员在服务器做CORS设置即可，整个通信过程都是浏览器自动完成的，不需要前端工程师做任何介入</p>
+<p><img src="imgs\25.png" alt="image-20201208092817118"></p>
+<h4 id="jsonp-"><strong>JSONP方式</strong></h4>
+<p>JSONP所有浏览器均可以使用包括IE6</p>
+<p>它只支持GET跨域请求，不支持POST跨域请求</p>
+<p>JSOPN需要服务器的支持</p>
+<p>面试官在考察跨域知识的时候总喜欢问到它</p>
+<h3 id="jquery-jsonp-">jQuery发送JSONP请求</h3>
+<ul>
+<li><p>支持jsonp请求的url地址：<a href="http://127.0.0.1:3001/getStudentsJSONP.js">http://127.0.0.1:3001/getStudentsJSONP.js</a></p>
+</li>
+<li><p>Api说明文档：<code>http://157.122.54.189:9092/upload/ajaxdoc/index.html#api-04-其他接口-getStudentsJsonP</code></p>
+</li>
+<li><p>jQuery 发送JSONP请求代码</p>
+<pre><code class="lang-javascript"> &lt;script src=&quot;../libs/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            $.ajax({
+                type: &#39;GET&#39;,
+                url: &#39;http://127.0.0.1:3001/getStudentsJSONP.js&#39;,                       
+                dataType: &#39;jsonp&#39;, // 指定dataType类型为jsonp
+                success: function (resData) {
+                    console.log(resData);
+                }
+            })
+        })
+    &lt;/script&gt;
+</code></pre>
+</li>
+</ul>
+<h3 id="jsonp-">JSONP实现原理</h3>
+<blockquote>
+<p>JSONP实现思想：网页通过添加一个<code>&lt;script&gt;</code>元素，向服务器请求JSON数据，这种做法不受同源策略限制，服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。</p>
+</blockquote>
+<ul>
+<li><p>通过上面jQuery发送JSONP请求时的两个现象来探究JSONP的实现原理</p>
+<p><img src="imgs\27.png" alt="image-20201208101946293"></p>
+</li>
+</ul>
+<h2 id="-">知识补充</h2>
+<h3 id="jquery-xml-">jQuery请求XML格式数据</h3>
+<h4 id="-xml">什么是XML</h4>
+<blockquote>
+<p>XML：可扩展标记语言是一种简单的数据存储语言，JSON出现之前，客户端与服务器的数据交互都是使用XML来进行的，所以在Ajax请求中，比较老的服务器响应回来的数据格式有可能是XML</p>
+</blockquote>
+<h4 id="xml-">XML格式举例</h4>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot; ?&gt;
+&lt;root&gt;
+    &lt;items&gt;
+        &lt;item&gt;
+            &lt;id&gt;4&lt;/id&gt;
+            &lt;name&gt;jodan&lt;/name&gt;
+            &lt;age&gt;21&lt;/age&gt;
+            &lt;gender&gt;男&lt;/gender&gt;
+            &lt;zhuanye&gt;ruby&lt;/zhuanye&gt;
+            &lt;address&gt;白云区&lt;/address&gt;
+        &lt;/item&gt;
+    &lt;/items&gt;
+&lt;/root&gt;
+</code></pre>
+<h4 id="jquery-xml-">jQuery中请求和处理XML格式数据</h4>
+<blockquote>
+<p>提示：重点掌握通过jquery获取响应回来的数据方式</p>
+</blockquote>
+<ul>
+<li>接口：<a href="http://127.0.0.1:3001/getUserNameXML">http://127.0.0.1:3001/getUserNameXML</a> 返回的数据是XML格式的</li>
+<li>请求ajax请求如下</li>
+</ul>
+<pre><code class="lang-javascript">// http://127.0.0.1:3001/getUserNameXML 接口会返回xml数据
+$.get(&#39;http://127.0.0.1:3001/getUserNameXML&#39;, null, function (resData) {
+    console.log(resData);
+    /**
+        resData是一个dom对象（jquery已经将xml转换成了dom对象）:
+             &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot; ?&gt;
+                        &lt;root&gt;
+                            &lt;items&gt;
+                                &lt;item&gt;
+                                    &lt;id&gt;5&lt;/id&gt;
+                                    &lt;name&gt;jack&lt;/name&gt;
+                                    &lt;age&gt;22&lt;/age&gt;
+                                    &lt;gender&gt;男&lt;/gender&gt;
+                                    &lt;zhuanye&gt;java&lt;/zhuanye&gt;
+                                    &lt;address&gt;增城市&lt;/address&gt;
+                                &lt;/item&gt;
+                            &lt;/items&gt;
+                        &lt;/root&gt;
+                 */
+    // 使用jquery中的find方法查找resData对象中的address节点数据（重点掌握）
+    var address = $(resData).find(&#39;address&#39;).text();         
+    alert(address)
+})
+</code></pre>
+<h3 id="jquery-ajax-loading-">jQuery Ajax请求loading效果</h3>
+<blockquote>
+<p>如果网速较慢或者服务器响应较慢的情况下，我们通过ajax请求数据就会变得比较慢，从而会出现页面中的静态资源出现了，但是数据还没有出现的情况，所以我们需要在请求过程中增加loading效果来提示用户ajax正在加载数据中，增强用户体验</p>
+</blockquote>
+<ul>
+<li><p>关键代码</p>
+<pre><code class="lang-javascript">$.ajax({
+    beforeSend:function(XHR){}  // ajax发出请求前 弹出正在加载中
+    complete:function(XHR){} // ajax请求完成后，关闭正在加载中提示
+})
+
+</code></pre>
+</li>
+<li><p>效果代码演示</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .loading{
+            width: 400px;
+            margin: 10px auto;            
+        }
+        .loading img{
+            vertical-align: middle;
+        }
+
+        .none {
+            display: none;
+        }
+        #res{
+            border: 1px solid red;
+            height: 20px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;    
+    &lt;!-- 展示ajax请求成功的结果 --&gt;
+    &lt;div id=&quot;res&quot;&gt;&lt;/div&gt;
+
+    &lt;!-- 定义正在加载中面板，默认添加了none 隐藏它 --&gt;
+    &lt;div class=&quot;loading none&quot;&gt;
+        &lt;img src=&quot;./timg.gif&quot; style=&quot;width: 100px;height:100px;&quot;&gt;
+        正在加载中.....
+    &lt;/div&gt;
+
+    &lt;script src=&quot;../libs/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            $.ajax({
+                type:&#39;get&#39;,
+                url:&#39;http://127.0.0.1:3001/getStudentsJSONDelay&#39;,
+                // 1.0 Ajax请求发出之前触发此函数的执行
+                beforeSend:function(xhr) {
+                    // 1.0.1 显示正在加载中提示面板
+                    $(&#39;.loading&#39;).removeClass(&#39;none&#39;);
+                },
+                // 2.0 ajax请求响应完毕以后触发此函数的执行
+                complete:function(xhr){
+                    // 2.0.1 关闭正在加载中提示面板
+                    $(&#39;.loading&#39;).addClass(&#39;none&#39;);
+                },
+                // 3.0 服务器响应成功以后执行
+                success:function(resData){                
+                   $(&#39;#res&#39;).html(resData.des);
+                }
+            })
+        })
+    &lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<h3 id="xmlhttprequest-level-2-">XMLHttpRequest Level  2 新特性</h3>
+<blockquote>
+<p><strong>老版本的XMLHttpRequest对象有以下几个缺点</strong>:</p>
+<pre><code>- 只支持文本数据的传送，无法用来读取和上传二进制文件
+- 传送和接收数据时，没有进度信息，只能提示有没有完成
+- IE10以下的浏览器不支持跨域资源共享（CORS）
+</code></pre><p><strong>新版本的XMLHttpRequest对象，针对老版本的缺点，做出了大幅改进:</strong></p>
+<ul>
+<li>可以设置Ajax请求超时(timeout)，超过请求时限自动终止请求，节约浏览器性能</li>
+<li>可以发送FormData对象格式的数据，典型应用是做上传文件操作</li>
+<li>可以获得数据传输的进度信息，例如上传进度提示</li>
+<li>支持跨域资源共享（CORS）</li>
+</ul>
+</blockquote>
+<h4 id="-">设置请求超时</h4>
+<blockquote>
+<p>如果服务器响应非常慢，会影响咱们Ajax请求的性能，我们可以通过设置timeout</p>
+</blockquote>
+<pre><code class="lang-javascript">&lt;script&gt;
+        var xhr = new XMLHttpRequest();
+        xhr.open(&#39;get&#39;,&#39;http://127.0.0.1:3001/getStudentsJSONDelay&#39;);
+        //表示超过1000毫秒（等于1秒）服务器还未响应回来，则中断ajax请求
+        //而http://127.0.0.1:3001/getStudentsJSONDelay 接口需要5秒以后才会返回，所以这次ajax请求肯定会被中断
+        xhr.timeout = 1000; 
+        xhr.send();
+        xhr.onload = function(resData){
+            console.log(resData);
+        }
+    &lt;/script&gt;
+</code></pre>
+<h4 id="-formdata-">发送formData数据（上传）</h4>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;!-- 1.0 准备一个file类型的input元素，用于读取电脑磁盘文件 --&gt;
+    &lt;input type=&quot;file&quot; id=&quot;img&quot;&gt;
+    &lt;!-- 2.0 点击上传按钮，执行上传文件操作 --&gt;
+    &lt;button id=&quot;bt_upimg&quot;&gt;上传&lt;/button&gt;
+
+    &lt;script&gt;
+        window.onload = function () {
+            // 获取上传按钮对象
+            var bt_upimg = document.querySelector(&#39;#bt_upimg&#39;);
+            // 给上传按钮注册click事件
+            bt_upimg.onclick = function () {
+
+                var xhr = new XMLHttpRequest();
+                xhr.open(&#39;post&#39;, &#39;http://127.0.0.1:3001/uploadFile&#39;);
+                // 读取文件
+                var file = document.querySelector(&#39;#img&#39;).files[0];
+                // 将文件追加到formData对象中
+                var formData = new FormData();
+                formData.append(&#39;file_data&#39;, file);
+                // 执行ajax发送将包含有文件内容的formData对象发送给服务器
+                xhr.send(formData);
+                // 请求响应处理
+                xhr.onload = function () {
+                    console.log(xhr.responseText);
+                }
+            }
+        }
+
+    &lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+<h4 id="-">文件上传进度</h4>
+<ul>
+<li><p>获取进度核心代码</p>
+<pre><code class="lang-javascript">// 获取上传文件的进度信息
+xhr.upload.onprogress = function (progressEvent) {
+    //lengthComputable 表示文件是否可以计算，true表示可计算，false不可计算
+    if (progressEvent.lengthComputable) {
+        // 获取文件总长度：progressEvent.total
+        let total = progressEvent.total;
+
+        // 获取当前已经上传的长度
+        let loaded = progressEvent.loaded;
+
+        // 计算进度值，范围：0 ~ 1 之间的值
+        let currentLength = loaded / total;
+    }
+}
+</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>完整代码</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../../libs/bootstrap/css/bootstrap.css&quot;&gt;
+    &lt;style&gt;
+        .progress {
+            width: 300px;
+        }
+        .progress .sr-only {
+            color: red;
+            position: relative;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;!-- 1.0 准备一个file类型的input元素，用于读取电脑磁盘文件 --&gt;
+    &lt;input type=&quot;file&quot; id=&quot;img&quot;&gt;
+    &lt;!-- 2.0 点击上传按钮，执行上传文件操作 --&gt;
+    &lt;button id=&quot;bt_upimg&quot;&gt;上传&lt;/button&gt;
+    &lt;!-- 3.0 设置进度条 --&gt;
+    &lt;div class=&quot;progress&quot;&gt;
+        &lt;div class=&quot;progress-bar progress-bar-success progress-bar-striped&quot; 
+        role=&quot;progressbar&quot; style=&quot;width:0px ;&quot;&gt;
+            &lt;span class=&quot;sr-only&quot;&gt;0%&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src=&quot;../../libs/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            $(&#39;#bt_upimg&#39;).click(function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open(&#39;post&#39;, &#39;http://127.0.0.1:3001/uploadFile&#39;);
+                // 获取上传文件的进度信息
+                xhr.upload.onprogress = function (progressEvent) {
+                    //lengthComputable 表示文件是否可以计算，true表示可计算，false不可计算
+                    if (progressEvent.lengthComputable) {
+                        // 获取文件总长度：progressEvent.total
+                        let total = progressEvent.total;
+
+                        // 获取当前已经上传的长度
+                        let loaded = progressEvent.loaded;
+
+                        // 计算进度值，范围：0 ~ 1 之间的值
+                        let currentLength = loaded / total;
+
+                        // 设置进度百分比
+                        $(&#39;.sr-only&#39;).html(currentLength * 100 + &#39;%&#39;);
+
+                        // 设置进度条宽度比例，进度条总长度为300 * 进度值currentLength
+                        $(&#39;.progress-bar&#39;).css(&#39;width&#39;,currentLength * 300 +&#39;px&#39;);
+                    }
+                }
+                // 读取文件
+                var file = document.querySelector(&#39;#img&#39;).files[0];              
+                // 将文件追加到formData对象中
+                var formData = new FormData();
+                formData.append(&#39;file_data&#39;, file);
+                // 执行ajax发送将包含有文件内容的formData对象发送给服务器
+                xhr.send(formData);
+                // 请求响应处理
+                xhr.onload = function () {
+                    console.log(xhr.responseText);
+                }
+            })
+        })
+    &lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<h3 id="-">前端优化-防抖</h3>
+<h4 id="-">什么是防抖</h4>
+<blockquote>
+<p>当持续触发相同事件时，如果设定的时间到来之前，又一次触发了事件，就重新开始延时，如果设定的时间到来之后都没有再次触发事件，则执行最后一次事件</p>
+</blockquote>
+<p><img src="imgs\28.png" alt="image-20201208182957249"></p>
+<h4 id="-">实现验证用户名是否可用案例</h4>
+<ul>
+<li><p>jQuery的keydown事件来实现验证用户名代码（有性能问题版本）</p>
+<pre><code class="lang-html">&lt;body&gt;
+    &lt;div&gt;
+        用户名： &lt;input type=&quot;text&quot; id=&quot;username&quot;&gt;
+        &lt;span class=&quot;checktip&quot;&gt;&lt;/span&gt;
+    &lt;/div&gt;    
+    &lt;script src=&quot;../libs/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            // 1.0 定义检查用户名是否存在的ajax请求方法
+            function checkUserName() {
+                var uname = $(&#39;#username&#39;).val();
+                $.get(&#39;http://127.0.0.1:3001/validate&#39;, { userName: uname }, function (resData) {
+                    $(&#39;.checktip&#39;).html(resData.msg);
+                })
+            }
+
+            // 2.0 给文本框注册keydown事件
+            // 思考出现的问题：用户每按一下键盘都会发送一个ajax请求出去，这样很浪费性能
+            $(&#39;#username&#39;).keydown(function() {
+                checkUserName();
+            })
+        })
+    &lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+</li>
+<li><p>jQuery的keydown事件来实现验证用户名代码（性能优化-防抖版本）</p>
+<pre><code class="lang-html">&lt;body&gt;
+    &lt;div&gt;
+        用户名： &lt;input type=&quot;text&quot; id=&quot;username&quot;&gt;
+        &lt;span class=&quot;checktip&quot;&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;../libs/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            // 1.0 定义检查用户名是否存在的ajax请求方法
+            function checkUserName() {
+                var uname = $(&#39;#username&#39;).val();
+                $.get(&#39;http://127.0.0.1:3001/validate&#39;, { userName: uname }, function (resData) {
+                    $(&#39;.checktip&#39;).html(resData.msg);
+                })
+            }
+            // 2.0 定义timer用来存储setTimeout定时器对象
+            let timer = null;
+            // 3.0 定义防抖函数，保证在执行时间500毫秒内多次执行fangdou()方法的话，永远只执行一次
+            function fangdou() {
+                if (timer !== null) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() =&gt; {
+                    checkUserName();
+                }, 500);
+            }
+            // 2.0 给文本框注册keydown事件
+            // 思考出现的问题：用户每按一下键盘都会发送一个ajax请求出去，这样很浪费性能
+            $(&#39;#username&#39;).keydown(function () {
+                //答案：调用防抖函数fangdou();来保证频繁调用fangdou()时，只发出一次ajax请求
+                fangdou();
+            })
+        })
+    &lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+</li>
+</ul>
+<h4 id="-">前端优化-节流</h4>
+<blockquote>
+<p>在一定时间内不管触发多少次相同的事件，都只执行第一次的事件</p>
+</blockquote>
+<ul>
+<li><p>天使随鼠标移动案例（节流版）</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        #angel {
+            position: absolute;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- 0 准备一个图片 --&gt;
+    &lt;img id=&quot;angel&quot; src=&quot;./angle.gif&quot; alt=&quot;&quot;&gt;
+
+    &lt;script src=&quot;../libs/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            // 1.0 定义变量
+            let timer = null;
+            $(document).mousemove(function (e) {
+                // 2.0 如果timer不为空，则表示当前有一个setTimeout的回调函数等待执行，就不再设置新的setTimeout
+                if (timer) return;
+                // 3.0 如果timer为空，则设置一个setTimeout，30毫秒以后执行
+                timer = setTimeout(() =&gt; {
+                    $(&#39;#angel&#39;).css(&#39;left&#39;, e.pageX - 100 + &#39;px&#39;).css(&#39;top&#39;, e.pageY - 100 + &#39;px&#39;);
+                    console.log(&#39;angel&#39;);
+                    // 4.0 执行完毕以后，timer置空，表示下个时间段可以设置新的setTimeout处理逻辑
+                    timer = null;
+                }, 30);
+
+            })
+        })
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<h2 id="-">常见响应状态码说明</h2>
+<h3 id="2-">2**成功相关的响应状态码</h3>
+<blockquote>
+<p>2**的状态码表示服务器已经成功处理了请求，常见的状态码为200</p>
+</blockquote>
+<p><img src="imgs\30.png" alt="image-20201208222404698"></p>
+<h3 id="4-">4**客户端错误相关的响应状态码</h3>
+<blockquote>
+<p>4**的状态码，表示客户端的请求有非法内容导致本次请求失败，常见的状态码有：</p>
+</blockquote>
+<p><img src="imgs\31.png" alt="image-20201208223451935"></p>
+<h3 id="5-">5**服务器端错误相关的响应状态码</h3>
+<blockquote>
+<p>5**的状态码，表示服务器在处理客户端请求时出现了错误，常见的状态码有：</p>
+</blockquote>
+<p><img src="imgs\32.png" alt="image-20201208223620078"></p>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
