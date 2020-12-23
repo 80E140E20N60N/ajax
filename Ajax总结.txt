@@ -1,0 +1,155 @@
+ajax
+
+template模板引擎   http://aui.github.io/art-template/zh-cn/docs/syntax.html#%E8%BE%93%E5%87%BA
+
+	template.js是一款JavaScript模板引擎，用来渲染页面的。
+	原理：提前将Html代码放进编写模板
+	
+	一、引用   可以下载、也可以npm安装后调用
+	<script src="../template.js"></script>
+	
+	二、写模板
+	<script id="自己取" type="text/html">
+	
+		写模板引擎html代码，可以有 if条件判断 、each循环
+		特点：  {{ }}
+	</script>
+	
+	三、调用template方法完成模板编译
+	<script>
+	
+	let res = template('模板的id', 数据 )
+	
+	</script>
+	
+	
+ajax请求超时处理
+	浏览器只能同时处理5-6个ajax请求	
+	
+	xhr对象提供了一个timeout属性，可以设置一个毫秒数，如果在设置的毫秒数之内服务器没有响应，ajax请求自动终止
+	
+	xhr.timeout=500;  //表示服务器在500ms内没有响应则终止当前
+	
+
+异步对象的onload方法
+
+
+
+HTTP协议   客户端与服务器通讯要遵守的格式
+
+	//请求   request
+	
+		格式：
+			请求行                       作用：浏览器告诉服务器请求的路径    get或post    http协议版本 通常1.1
+			请求头						 浏览器提供的额外信息
+			空行
+			请求体  get请求没有请求体     浏览器在post请求时才会有，此时请求头代用Content-Type类型  Content-Length
+	
+	
+	//响应	 response
+		
+		格式：
+			响应行                       作用：告诉浏览器，服务器响应是否成功，其中200表示成功
+			响应头							
+			空行
+			响应体  						服务器的数据通过响应体返回给浏览器
+			
+	//响应状态码
+		2**的状态码表示服务器已经成功处理了请求，常见的状态码为200
+		
+		3**的状态码，表示服务器要求客户端进行新的URL重定向，需要客户端进一步请求新URL才能完成资源的请求
+
+		4**的状态码，表示客户端的请求有非法内容导致本次请求失败，常见的状态码有：404
+
+		5**的状态码，表示服务器在处理客户端请求时出现了错误
+		
+	//Ip地址
+		格式： xxx.xxx.xxx.xxx  每一个都是从0~255取值
+		
+		广域网
+		
+		局域网    
+			127.0.0.1 代表本机
+		
+	//端口
+		Ip地址代表的是一台电脑，端口代表这台电脑上的某个软件，通过端口可以与这个软件进行网络通讯
+		http://127.0.0.1:5500/index.html     5500 就是端口
+		
+	//同源
+		
+		两个url地址，协议、主机(域名+端口)都相同，就表示同源
+		
+		http://www.test.com/api
+		
+		http://www.test.com/index
+		
+	//跨域
+		//什么是跨域
+			跨域是指从一个域名去请求另一个域名的资源，严格来说，只要域名，协议，端口任何一个不同，就视为跨域。
+		
+		//为什么会出现跨域			
+			为了网络安全起见，浏览器设置了一个同源策略，规定只有域名，端口，协议全部相同，就叫做同源。当页面在执
+			行一个脚本时，会检查访问的资源是否同源，如果不是，就会报错。可是在实际开发中，经常会有跨域加载资源的
+			需求，避免不了跨域请求，所以就出现了跨域。
+			
+			同源策略表现：
+			（1）coikie、LocalStorage和Index DB 无法读取
+			（2）Dom 无法获得
+			（3）AJAX请求不能发送
+			
+		//跨域解决方案   跨域是浏览器自己的同源策略做的阻拦，和服务器没有关系，但是两个跨域的解决需要服务器配合
+		
+			1、CORS跨域
+			表现形式：服务器在响应报文头中增加了三个头信息来允许跨域访问    cors跨域是后端设置的
+		
+		
+			2、jsonP跨域  只支持get，不支持post 现在不常用
+			
+	
+	
+	settimeout  延时时间到后执行
+		
+	//jQuery请求XML格式数据  了解即可，现在基本都是json	
+		
+		
+	//ajax请求loading	可以做请求后在等待的时候转圈圈
+	
+	
+	
+	//防抖和节流
+	
+	防抖只执行最后一次触发，前面多次触发会取消
+	
+		
+	一定时间内，节流只执行第一次触发	
+		
+	
+	//jq进度条百分比	
+		
+		
+	
+
+
+
+	
+GIT 版本管理工具
+	
+	码云后续代码修改提交？
+	
+	clear 清屏动作
+	
+	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsLHv1sJjgjHBF+sIVcVNZRYVjL3Ydb0+yJs4SQ8YsaGMkanLWSoOCS8VNFdOBrGSCoJk7PbVBjceUMffZqNTsJRkP0DsANgoAsoBpWd7Db5lgLGqLzMw5nMcGUR5QR9kdjHuwHXE79ubyKMBsujI5SCIDyI0/8oUEjm+ttvWBdNzfNvkTd3MwVEFjbMisXe7JE028PKmJlMYlTz2XB+mbNsPlL+m8CcGi/bQS5iSBENzmLJ2Rx+2qSfFbcp3lMlkhMykyJIWZduWy6NeyM+yaGGhWhxlugthfAPRrjkt0yCmqjXfny3Cn+ETiuX5d6fS532CN4NZ/7WvuzhUYLYd6oNkSB9hJ6aawrluABOfdWDIbt2OS0ZiIMTeQwl1sEEW4iZiuHWNMVsDiRWbYu3Da1225PphxogyHny/3FmKkSd/6JdYChAExsrJyWNdeDpyg5f15wL/tSo+l62YWABd/hWDZQ6sWOTgGPOpGS9ra4mhu66E/rPsHfBhtIIqINYU= HAN@HAN
+
+	
+	修改分支名称：git branch -M 新分支命名
+
+
+
+
+
+
+
+
+
+
+		
