@@ -132,16 +132,7 @@ HTTP协议   客户端与服务器通讯要遵守的格式
 
 
 	
-GIT 版本管理工具
-	
-	码云后续代码修改提交？
-	
-	clear 清屏动作
-	
-	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsLHv1sJjgjHBF+sIVcVNZRYVjL3Ydb0+yJs4SQ8YsaGMkanLWSoOCS8VNFdOBrGSCoJk7PbVBjceUMffZqNTsJRkP0DsANgoAsoBpWd7Db5lgLGqLzMw5nMcGUR5QR9kdjHuwHXE79ubyKMBsujI5SCIDyI0/8oUEjm+ttvWBdNzfNvkTd3MwVEFjbMisXe7JE028PKmJlMYlTz2XB+mbNsPlL+m8CcGi/bQS5iSBENzmLJ2Rx+2qSfFbcp3lMlkhMykyJIWZduWy6NeyM+yaGGhWhxlugthfAPRrjkt0yCmqjXfny3Cn+ETiuX5d6fS532CN4NZ/7WvuzhUYLYd6oNkSB9hJ6aawrluABOfdWDIbt2OS0ZiIMTeQwl1sEEW4iZiuHWNMVsDiRWbYu3Da1225PphxogyHny/3FmKkSd/6JdYChAExsrJyWNdeDpyg5f15wL/tSo+l62YWABd/hWDZQ6sWOTgGPOpGS9ra4mhu66E/rPsHfBhtIIqINYU= HAN@HAN
 
-	
-	修改分支名称：git branch -M 新分支命名
 
 
 
